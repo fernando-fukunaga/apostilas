@@ -109,4 +109,11 @@ No exemplo acima, a classe "Livro" possui um atributo "autores", que é uma list
 
 A agregação é uma forma útil de modelar relacionamentos entre objetos em um programa orientado a objetos, permitindo que as classes sejam compostas de objetos de outras classes de maneira flexível e reutilizável.
 
-## Dunder methods
+## Função Assíncrona
+Uma função assíncrona, ou "async function", é uma função especial em Python que permite que o código seja executado de forma assíncrona. Isso significa que, em vez de bloquear a execução do programa até que uma operação seja concluída, a função assíncrona permite que o programa continue a ser executado enquanto a operação está em andamento.
+
+A função assíncrona é definida usando a palavra-chave "async" antes da definição da função. Ela é executada em um objeto asyncio.EventLoop, que é responsável por gerenciar a execução assíncrona.
+
+Dentro de uma função assíncrona, você pode usar a palavra-chave "await" antes de uma chamada a outra função assíncrona ou a uma operação de E/S (como uma chamada a uma API ou a um banco de dados), para indicar que você deseja esperar até que a operação seja concluída antes de continuar com a execução do código.
+
+As funções assíncronas são muito úteis para lidar com operações de E/S demoradas ou bloqueantes, como requisições de rede ou acesso a banco de dados, sem bloquear a execução do programa. Elas permitem que o código seja executado de forma mais eficiente, melhorando o desempenho e a escalabilidade do programa.
