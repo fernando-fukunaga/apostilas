@@ -117,3 +117,25 @@ A função assíncrona é definida usando a palavra-chave "async" antes da defin
 Dentro de uma função assíncrona, você pode usar a palavra-chave "await" antes de uma chamada a outra função assíncrona ou a uma operação de E/S (como uma chamada a uma API ou a um banco de dados), para indicar que você deseja esperar até que a operação seja concluída antes de continuar com a execução do código.
 
 As funções assíncronas são muito úteis para lidar com operações de E/S demoradas ou bloqueantes, como requisições de rede ou acesso a banco de dados, sem bloquear a execução do programa. Elas permitem que o código seja executado de forma mais eficiente, melhorando o desempenho e a escalabilidade do programa.
+
+## Instanciando um objeto passando um dict como atributo
+Considere a seguinte classe herdeira de BaseModel:
+```python
+from pydantic import BaseModel
+
+class User(BaseModel):
+    username: str
+    password: str
+    email: str
+```
+Ao instanciar algum usuário, neste caso, há uma maneira de passar uma variável que contém um dict inteiro ao invés de passar chave e valor, um por um. É só usar dois asteriscos ** que você passa apenas o nome de uma variável com um dicionário inteiro:
+```python
+dict = {
+    "username": "usuario33"
+    "password": "senha123"
+    "email": "usuario123@email.com"
+}
+
+objeto_usuario = User(**dict)
+```
+Ao fazer isso, você pode digitar apenas **dict ao invés de escrever como parâmetro o dicionário inteiro, isso pode ser muito útil caso você queira usar uma mesma estrutura de dicionário para vários objetos diferentes, é só usar variáveis para os valores no dicionário dict.
