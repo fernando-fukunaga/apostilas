@@ -139,3 +139,13 @@ dict = {
 objeto_usuario = User(**dict)
 ```
 Ao fazer isso, você pode digitar apenas **dict ao invés de escrever como parâmetro o dicionário inteiro, isso pode ser muito útil caso você queira usar uma mesma estrutura de dicionário para vários objetos diferentes, é só usar variáveis para os valores no dicionário dict.
+
+## Annotated
+No momento, nosso entendimento do uso do Annotated é: passar mais de uma característica para o parâmetro de uma função no FastAPI. Então por exemplo, se uma função recebe como parâmetro um token que deve ser uma string mas também trabalha com dependência do Depends, usamos:
+```python
+from typing import Annotated
+
+def funcao(token: Annotated[str, Depends(dependency)]):
+    pass
+```
+Até o momento, eu sei que isso não passa de uma boa prática e não usar pode causar erros, mas ainda precisamos pesquisar melhor o motivo de usar essa feature.
