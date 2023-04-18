@@ -149,3 +149,9 @@ def funcao(token: Annotated[str, Depends(dependency)]):
     pass
 ```
 Até o momento, eu sei que isso não passa de uma boa prática e não usar pode causar erros, mas ainda precisamos pesquisar melhor o motivo de usar essa feature.
+
+## Criptografia Assimétrica
+```terminal
+openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1)         -keyout private.key -out public.crt         -days 1095 -subj "/CN=teste_fanna"
+```
+Use esse comando para gerar chave privada e pública e trabalhar com assimétrica.
