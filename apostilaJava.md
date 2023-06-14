@@ -15,3 +15,6 @@ Uma classe ode ter várias sub-classes porém apenas uma classe por arquivo pode
 
 ## Sobrecarga e Sobrescrita
 São duas formas de implementar o polimorfismo, a sobrecarga é quando você faz um outro comportamento para um método mudando os atributos, a sobrescrita ou override, é quando os atributos se mantêm iguais.
+
+## Métodos static e non-static
+Um método estático é um método da classe, que não necessita de nenhuma intância de objeto para ser chamado. Já o método não estático, só pode ser chamado quando se tem instâncias daquele objeto, como por exemplo os getter e setters, não dá para manipular atributos de objeto se nenhum objeto foi instanciado ainda.

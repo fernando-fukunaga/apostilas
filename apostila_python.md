@@ -154,4 +154,69 @@ Até o momento, eu sei que isso não passa de uma boa prática e não usar pode 
 ```terminal
 openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1)         -keyout private.key -out public.crt         -days 1095 -subj "/CN=teste_fanna"
 ```
-Use esse comando para gerar chave privada e pública e trabalhar com assimétrica.
+Use esse comando para gerar chave privada e pública e trabalhar com chaves assimétricas.
+
+## Definindo tipagem e usando o typing
+No Python, você pode definir o tipo de dado que uma variável deve receber, por exemplo, vou criar uma variável nome_cliente e eu PRECISO que seja do tipo string, então:
+```python
+nome_cliente : str = "Fernando"
+```
+Isso irá mostrar que a variável deve receber uma string. Um outro exemplo interessante é definir os tipos de dados que os parâmetros de uma função deve receber:
+```python
+def somar(num1: int, num2: int):
+    return num1 + num2
+```
+Aqui vemos uma simples função de soma mas eu especifiquei que esse método só pode ser chamado com 2 números inteiros, então não dá para chamar com uma string. Isso aumenta muito a qualidade e segurança do código, além de deixar o código mais legível para outros devs.
+
+Agora uma outra coisa bem legal em definição de tipagem, é a famosa setinha ->. Para que ela serve? Bom, essa setinha é utilizada geralmente depois da definição de um método, para dizer que tipo de dado esse método deve retornar, exemplo:
+```python
+def hello_world(nome: str) -> str:
+    return f'Olá, mundo! Olá, {nome}!'
+```
+Com isso, você crava que a função hello_world() só pode retornar um dado do tipo str, isso é muito útil.
+
+Outra forma que gostei muito de usar a setinha, é para dizer que uma função deve retornar uma instância de classe, ou seja, você demanda que uma função deve retornar um objeto de uma classe, da seguinte maneira:
+```python
+class Cliente:
+    def __init__(nome: str, idade: int):
+        self.nome = nome
+        self.idade = idade
+
+def cria_cliente(nome: str, idade: int) -> Cliente:
+    # A setinha que vc viu aí em cima apontando para a classe cliente, diz que essa função DEVE retornar uma intância/objeto dessa classe
+    cliente = Cliente(nome, idade)
+    return cliente
+```
+Olha só que legal, assim podemos podemos criar uma função que retorna um objeto, wow. Isso é muito utilizado em frameworks de desenvolvimento web, para instanciar a aplicação em sí, chamando as rotas que podem estar em outro arquivo do projeto!
+
+Agora, quando quiser usar essa funcionalidade em casos mais complexos como com lista, por exemplo, você deve importar a biblioteca typing, que possui features que ajudam com esses tipos mais complexos de dados. Por exemplo, ao instanciar uma lista, posso usar a classe List da lib typing e definir para a lista receber somente determinado tipo de dado:
+```python
+from typing import List
+
+class Cliente:
+    def __init__(nome: str, idade: int):
+        self.nome = nome
+        self.idade = idade
+
+cliente_1 = Cliente("Fernando", 20)
+cliente_2 = Cliente("João", 34)
+cliente_3 = Cliente("Pedro", 25)
+
+# Aqui usarei a feature para dizer que lista_1 só pode receber strings
+lista_1: List[str] = ["Fernando", "João", "Pedro"]
+# Aqui, usarei para dizer que a lista só pode receber objetos da classe Cliente, sacou??
+lista_2: List[Cliente] = [cliente_1, cliente_2, cliente_3]
+```
+
+## with / as
+with é uma declaração em Python que é usada para trabalhar com recursos externos que precisam ser abertos antes do uso e, em seguida, fechados após o uso. O bloco with garante que o recurso será fechado ao final, mesmo que ocorra uma exceção.
+
+O with as é uma extensão do with que permite atribuir o recurso aberto a uma variável para facilitar o seu uso dentro do bloco with. É comumente usado para abrir arquivos e manipulá-los dentro de um bloco with, garantindo que o arquivo seja fechado automaticamente ao final.
+
+Por exemplo, podemos abrir um arquivo usando with as da seguinte maneira:
+```python
+with open('arquivo.txt', 'r') as f:
+    conteudo = f.read()
+    print(conteudo)
+```
+Nesse exemplo, o arquivo é aberto em modo de leitura e seu conteúdo é armazenado na variável conteudo. Ao final do bloco with, o arquivo é fechado automaticamente pelo Python, sem a necessidade de chamar o método close() explicitamente.
