@@ -7,6 +7,16 @@ A abstração é a mesma coisa, num fluxo do tipo: vendedor >vende> produto >com
 
 Isso compõe o conceito de mini-mundo: representação da estrutura do negócio, espelhando recortes do mundo real. Através desta etapa, entendemos como o banco de dados será estruturado.
 
+## Ordem passo a passo do processo de modelagem
+A ordem é:
+* Entevista com o usuário
+* Criação do mini-mundo
+* Modelo conceitual
+* Modelo lógico
+* Modelo físico
+
+É muito comum que as pessoas façam apenas a modelagem conceitual e depois já vão direto para a física, pulando assim a modelagem lógica, isso é até que bem compreensível haja visto que o modelo lógico e o modelo físico são MUITO parecidos, em minha opinião, pular para o modelo físico é até um ato de melhor aproveitamento de tempo.
+
 ## Entidade forte x fraca
 Uma entidade forte no banco de dados é a entidade que não depende necessáriamente de outra para existir ea entidade fraca só existe perante a existencia de uma entidade-pai que seja forte. Além disso as entidades fortes sempre têm uma chave primária enquanto as fracas não possuem chave primária, mas possuem uma chave parcial que discrimina de maneira única as entidades fracas. Ou talvez uma chave estrangeira, que é a chave primária de sua entidade forte, por exemplo, um item de compra não terá chave primária mas terá uma chave estrangeira que é a chave primária da compra a qual ele está relacionado.
 
@@ -18,3 +28,11 @@ No universo dos atributos multivalorados, podem existir atributos compostos que 
 
 ## Atributos armazenados e derivados
 Um atributo armazenado é aquele que você simplesmente capta e registra no banco, como um CPF de uma pessoa. Agora um atributo derivado é aquele que você obtém a partir de operações envolvendo outros atributos armazenados, por exemplo, se eu tenho a data de nascimento de um cliente e a data de hoje, posso gerar um atributo derivado que seria a idade do cliente, fazendo uma operação matemática de subtração da data atual com a que ele nasceu.
+
+## Relacionamentos N:M no modelo conceitual
+Quando nos deparamos com um relacionamento N:M no modelo conceitual, ao migrar para o lógico ou físico, ele irá se tornar uma tabela, pois não temos como transferir o atributo desse relacionamento para nenhuma das duas entidades, isso não é viável. Pois nenhuma das duas entidades irá receber sempre só uma ocorrência da outra, e como não dá para guardar mais de um registro numa mesma célula por assim dizer, deve ser criada uma tabela apenas para representar a relação entre as duas, o famoso caso do item da compra.
+
+## Nomenclatura de artefatos/elementos
+A ponto de informação, os nomes dos elementos dos modelos evoluem conforme avançamos no fluxo, segue evolução seguindo a ordem conceitual > lógico > físico:
+* Entidade - Relação - Tabela
+* Atributo - Campo - Coluna
