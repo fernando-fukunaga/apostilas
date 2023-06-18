@@ -14,3 +14,6 @@ As estruturas de dados podem ser:
 * estáticas (têm tamanho/capacidade de memória fixa) ou dinâmicas (podem expandir).
 
 Basicamente estruturas de dados são as famosas variáveis que guardam vários valores diferentes, por exemplo arrays. No caso do Python, listas, tuplas e dict são estruturas de dados.
+
+## Super definição resumida do que é REST
+Em pouquíssimas palavras, dar um valor semântico às requisições, de acordo com o path e o método HTTP.

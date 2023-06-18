@@ -40,8 +40,8 @@ def get_codigo_banco():
 ```
 Em uma classe Conta, você pode chamar esse método sem ter instanciado alguma classe, e ele retornará o código do banco, pois será o mesmo para todas as contas que você criar, você nem precisa do self. Tome cuidado para não sair tacando staticmethod em todos os métodos da classe pois isso vai quebrar a orientação a objetos, saiba quando usar!
 
-### Convenção dos Pythoners
-Tornar um atributo ou método privado utilizando dois underscores é uma boa prática para o encapsulamento e segurança do app. Porém, existe uma prática mais popular que é de colocar apenas 1 underscore, como em self._nome por exemplo. Essa discussão começou pois ao colocar dois underscores, acaba de fato atrapalhando algumas funcionalidades, é um pouquinho burocrático para usar o atributo, vamos dizer. E como isso aqui é Python e não Java (rsrs), precisamos cortar o máximo de burocracia possível. Existe uma polêmica no ar quanto a essa questão, alguns ainda preferem e acham a melhor prática colocar dois unerlines mas a maioria dos Pythoners hoje colocam apenas um, isso não muda em nada na funcionalidade das paradas e é uma maneira de avisar à pessoa que está lendo o código que trata-se de algo privado, e por uma convenção entre os coders, ninguém mexe naquilo. É uma maneira de avisar que, mermão, se mexer pode quebrar a aplicação.
+### Convenção dos Pythonistas
+Tornar um atributo ou método privado utilizando dois underscores é uma boa prática para o encapsulamento e segurança do app. Porém, existe uma prática mais popular que é de colocar apenas 1 underscore, como em self._nome por exemplo. Essa discussão começou pois ao colocar dois underscores, acaba de fato atrapalhando algumas funcionalidades, é um pouquinho burocrático para usar o atributo, vamos dizer. E como isso aqui é Python e não Java (rsrs), precisamos cortar o máximo de burocracia possível. Existe uma polêmica no ar quanto a essa questão, alguns ainda preferem e acham a melhor prática colocar dois unerlines mas a maioria dos devs hoje colocam apenas um, isso não muda em nada na funcionalidade das paradas e é uma maneira de avisar à pessoa que está lendo o código que trata-se de algo privado, e por uma convenção entre os coders, ninguém mexe naquilo. É uma maneira de avisar que, mermão, se mexer pode quebrar a aplicação.
 
 ## Herança
 Use herança para herdar atributos de uma classe mãe para as classes filhas, onde as filhas podem ter atributos específicos, mas também atributos iguais a todos os seus irmãos que herdam de uma mesma mãe.
@@ -69,7 +69,7 @@ Então você pode usar for programa in programas, se não fosse o polimorfismo v
 ## Abstração
 A abstração consiste em criar uma classe abstrata, com métodos abstratos, mas o que isso significa? Uma classe abstrata não deve ser instanciada, assim como seus métodos não devem ser chamados diretamente. A classe abstrata serve literalmente apenas para ser usada como modelo para as suas subclasses, que aí sim, podem ter objetos. Os métodos abstratos devem ser obrigatóriamente escritos nas subclasses.
 
-Para criar uma classe abstrata, é necessário importar a lib abc, que é built-in. E dessa lib, você usará as classes ABC e staticmethod. Segue exemplo de uso:
+Para criar uma classe abstrata, é necessário importar a lib abc, que é built-in. E dessa lib, você usará as classes ABC e abstractmethod. Segue exemplo de uso:
 ```python
 from abc import ABC, abstractmethod
 
@@ -82,7 +82,7 @@ class Dog(Animal):
     def make_sound(self):
         print("Woof!")
 ```
-Não se esqueça de fazer a classe abstrata herdar de ABC. Para criar um método estático é só usar o decorator @staticmethod e no processamento deixar só um pass, pois cada subclasse poderá usar esse método de um jeito um pouco diferente. o método estático DEVE estar nas subclasses mas como você viu, não precisa do decorator nelas também.
+Não se esqueça de fazer a classe abstrata herdar de ABC. Para criar um método abstrato é só usar o decorator @abstractmethod e no processamento deixar só um pass, pois cada subclasse poderá usar esse método de um jeito um pouco diferente. o método abstrato DEVE estar nas subclasses mas como você viu, não precisa do decorator nelas também.
 
 ## Agregação
 Em programação orientada a objetos, a agregação é um conceito que descreve a relação entre duas classes, onde uma classe é composta de objetos de outra classe como parte de sua estrutura. Em Python, a agregação pode ser implementada através da criação de instâncias de objetos de uma classe dentro de outra classe.
@@ -139,16 +139,6 @@ dict = {
 objeto_usuario = User(**dict)
 ```
 Ao fazer isso, você pode digitar apenas **dict ao invés de escrever como parâmetro o dicionário inteiro, isso pode ser muito útil caso você queira usar uma mesma estrutura de dicionário para vários objetos diferentes, é só usar variáveis para os valores no dicionário dict.
-
-## Annotated
-No momento, nosso entendimento do uso do Annotated é: passar mais de uma característica para o parâmetro de uma função no FastAPI. Então por exemplo, se uma função recebe como parâmetro um token que deve ser uma string mas também trabalha com dependência do Depends, usamos:
-```python
-from typing import Annotated
-
-def funcao(token: Annotated[str, Depends(dependency)]):
-    pass
-```
-Até o momento, eu sei que isso não passa de uma boa prática e não usar pode causar erros, mas ainda precisamos pesquisar melhor o motivo de usar essa feature.
 
 ## Criptografia Assimétrica
 ```terminal
@@ -220,3 +210,10 @@ with open('arquivo.txt', 'r') as f:
     print(conteudo)
 ```
 Nesse exemplo, o arquivo é aberto em modo de leitura e seu conteúdo é armazenado na variável conteudo. Ao final do bloco with, o arquivo é fechado automaticamente pelo Python, sem a necessidade de chamar o método close() explicitamente.
+
+## Usando null no Python
+No python, para dizer que uma variável tem valor nulo, não existe a palavra null, usamos None para esses casos:
+```python
+variavel = None
+# essa variavel tem valor nulo :D
+```
