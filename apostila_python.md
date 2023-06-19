@@ -217,3 +217,6 @@ No python, para dizer que uma variável tem valor nulo, não existe a palavra nu
 variavel = None
 # essa variavel tem valor nulo :D
 ```
+
+## Modularização: a pasta infra
+Em um projeto profissional do Python, é comum usarmos uma pasta chamada infra para colocar códigos que envolvam bibliotecas que tenham papéis de protagonismo em seu sistema, por exemplo, é comum na pasta infra guardar códigos que envolvam o ORM que você vai usar, bibliotecas que conversam com serviços de nuvem como a AWS e coisas desse tipo.
