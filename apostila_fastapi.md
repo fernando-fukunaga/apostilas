@@ -64,5 +64,41 @@ class Usuario(BaseModel):
         orm_mode = True
 ```
 
+## SQL Migrations com Alembic
+A lib Alembic tem uma função muito legal trabalhando juntamente ao SQLAlchemy. Ele trata das SQL Migrations, mas o que é isso? Pense que o Alembic será como um "git" do seu banco de dados, ou seja, ele vai ajudar você a fazer alterações na estrutura do banco, como adicionar tabelas e colunas, alterar o nome de alguma coluna e coisas desse tipo, e deixará todas essas alterações versionadas dentro do seu projeto.
+
+É como se você pudesse ver toda a trajetória do seu banco, ele fica maleável e mutável, isso lembra um pouco o git não? Afinal, cada versão do seu banco seria como se fosse um commit diferente. Então quando você quer adicionar uma nova tabela ou coluna, por exemplo, ao invés de fazer aquele trampo de dropar o banco de dados e criá-lo novamente, perdendo assim os registros já existentes. Você pode apenas pedir para o Alembic detectar as mudanças que você fez no seu arquivo models.py do sqlalchemy por exemplo e aplicar essas mudanças. O Alembic vai atualizar seu banco, sem excluir registros que já haviam lá antes. Mas é claro que se por exemplo você mudar o data type de alguma coluna, você pode anular o valor dela em todos os registros, isso é normal. E pelo SQLite eu não consigo alterar coisas como constraints das colunas, acho até que faz sentido mas ainda podemos confirmar se em outros SGDB's acontece a mesma coisa.
+
+Para usar o Alembic, você deve instalar o mesmo no seu ambiente usando o pip, e inicializar ele com o comando:
+```terminal
+alembic init alembic
+```
+
+Depois, configure o arquivo alembic > env.py, você deve importar o seu Base e os seus models, e no mesmo arquivo, atribuir à variável target_metadata, a função metadata do seu Base:
+```python
+# Fazendo as importações
+from src.infra.sqlalchemy.config.database import Base
+from src.infra.sqlalchemy.models.models import *
+
+# Configura metadata
+target_metadata = Base.metadata
+```
+
+Depois disso, procuro o arquivo alembic.ini na raíz do projeto, abra o arquivo e em sqlalchemy.url coloque a url do seu banco de dados, sem aspas nenhuma.
+
+Pronto, você já pode usar o alembic, digite o comando abaixo no terminal, na raíz do projeto para pedir para o alembic detectar mudanças na config do seu banco e criar uma versão, entre aspas, digite uma breve mensagem explicando o que você alterou, tipo uma mensagem de commit, considere esse comando como se fosse um git add . para facilitar o entendimento:
+```terminal
+alembic revision --autogenerate -m "alterando coluna x da tabela y"
+```
+
+Ao executar esse comando, você perceberá que no caminho alembic > versions estão sendo criados arquivos .py com as suas versões e alterações. A própria lib te aconselha a fazer alterações nesse arquivo pois, como a geração do mesmo é automática, ele pode não ter "pego" tudo que você alterou exatamente igual, já percebi que ele não pega tamanho máximo de strings por exemplo, então faça alterações no arquivo sempre que necessário e se achar que está tudo certo, execute o comando abaixo para atualizar de fato o banco, considere esse comando como se fosse um git commit para facilitar o entendimento:
+```terminal
+alembic upgrade head
+```
+
+Pronto, você usou o alembic para atualizar seu banco sem precisar excluir ele a criar de novo. Lembre-se de sempre instalar o alembic e inicializar ele antes mesmo de rodar o projeto pela primeira vez, pois assim, você terá um histórico completo do ciclo de vida do seu banco de dados desde a sua criação.
+
+E lembre-se também que ter muita certeza das constraints de suas colunas na primeira criação, pois achei burocrático alterar isso depois, vejo o alembic como uma ferramenta mais para adicionar tabelas e colunas, alterar constraints já é um pouco complicado.
+
 ## Dicas e boas práticas
 * É uma boa prática colocar os nomes das rotas com palavras no plural, exemplo: "/buscar-contratos", isso faz parte da definição de REST, uma API RESTful tem que seguir esses tipos de padrão.
