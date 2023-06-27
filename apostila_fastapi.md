@@ -49,5 +49,20 @@ def cadastar(usuario: Usuario, banco_de_dados: Session = Depends(get_banco_de_da
     return usuario_cadastrado
 ```
 
+## Config de schemas
+Nos schemas da aplicação, sempre que criar um BaseModel, crie uma classe Config dentro desse BaseModel para permitir que um model seja convertido em schema da maneira correta, melhorando a comunicação entre esses dois elementos:
+```python
+class Usuario(BaseModel):
+    id: Optional[int] = None
+    nome: str
+    email: str
+    username: str
+    senha: str
+
+    # Essa config aqui:
+    class Config:
+        orm_mode = True
+```
+
 ## Dicas e boas práticas
 * É uma boa prática colocar os nomes das rotas com palavras no plural, exemplo: "/buscar-contratos", isso faz parte da definição de REST, uma API RESTful tem que seguir esses tipos de padrão.
