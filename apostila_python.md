@@ -14,7 +14,7 @@ Getter e setter são prefixos nas funções para especificar metodos de get ou s
 Usando o @property antes de um getter, você faz parecer que está acessando diretamente um atributo privado usando objeto.atributo sem parenteses, mas na verdade, por debaixo dos panos você está chamando um objeto.get_atributo();
 
 ### @atributo.setter
-Usando esse decorator você faz o mesmo efeito do property mas para um setter, no lugarde atributo escreve o atibuto que você quer modificar, exemplo: limite ou saldo.
+Usando esse decorator você faz o mesmo efeito do property mas para um setter, no lugar de "atributo" escreva o atibuto que você quer modificar, exemplo: limite ou saldo.
 
 ### Métodos privados
 Use o double underscore antes de um método para torná-lo privado e o mesmo só pode ser utilizado dentro da classe dele. Muito usado para verificações por exemplo:
@@ -32,16 +32,16 @@ def saca(self, valor):
 Neste exemplo, uma classe ContaBancaria tem o método saca() que vai subtrair um valor do saldo da conta e possui um método privado __pode_sacar() que valida se há limite de saque suficiente para a transação, esse método de pode sacar é privado, só poderá ser usado dentro de outros métodos da classe, e não ser chamado por fora igual o saca(), entendeu?
 
 ### Métodos estáticos
-Métodos estáticos são métodos que podem ser chamados dentro de uma classe sem precisar ter instanciado algum objeto, geralmente é usado para atributos que serão de mesmo valor para todos os objetos de uma classe, exemplo:
+Métodos estáticos são métodos que podem ser chamados sem precisar ter instanciado algum objeto de sua classe, geralmente é usado para atributos que serão de mesmo valor para todos os objetos de uma classe, exemplo:
 ```python
 @staticmethod
 def get_codigo_banco():
     return "001"
 ```
-Em uma classe Conta, você pode chamar esse método sem ter instanciado alguma classe, e ele retornará o código do banco, pois será o mesmo para todas as contas que você criar, você nem precisa do self. Tome cuidado para não sair tacando staticmethod em todos os métodos da classe pois isso vai quebrar a orientação a objetos, saiba quando usar!
+Em um código, você pode chamar esse método sem ter instanciado algum objeto de sua classe, e ele retornará o código do banco, pois será o mesmo para todas as contas que você criar, você nem precisa do self. Tome cuidado para não sair tacando staticmethod em todos os métodos da classe pois isso vai quebrar a orientação a objetos, saiba quando usar!
 
 ### Convenção dos Pythonistas
-Tornar um atributo ou método privado utilizando dois underscores é uma boa prática para o encapsulamento e segurança do app. Porém, existe uma prática mais popular que é de colocar apenas 1 underscore, como em self._nome por exemplo. Essa discussão começou pois ao colocar dois underscores, acaba de fato atrapalhando algumas funcionalidades, é um pouquinho burocrático para usar o atributo, vamos dizer. E como isso aqui é Python e não Java (rsrs), precisamos cortar o máximo de burocracia possível. Existe uma polêmica no ar quanto a essa questão, alguns ainda preferem e acham a melhor prática colocar dois unerlines mas a maioria dos devs hoje colocam apenas um, isso não muda em nada na funcionalidade das paradas e é uma maneira de avisar à pessoa que está lendo o código que trata-se de algo privado, e por uma convenção entre os coders, ninguém mexe naquilo. É uma maneira de avisar que, mermão, se mexer pode quebrar a aplicação.
+Tornar um atributo ou método privado utilizando dois underscores é uma boa prática para o encapsulamento e segurança do app. Porém, existe uma prática mais popular que é de colocar apenas 1 underscore, como em self._nome por exemplo. Essa discussão começou pois ao colocar dois underscores, acaba de fato atrapalhando algumas funcionalidades, é um pouquinho burocrático para usar o atributo, vamos dizer. E como isso aqui é Python e não Java (rsrs), precisamos cortar o máximo de burocracia possível. Existe uma polêmica no ar quanto a essa questão, alguns ainda preferem e acham a melhor prática colocar dois unerlines mas a maioria dos devs hoje colocam apenas um, isso não muda em nada na funcionalidade das paradas e é uma maneira de avisar à pessoa que está lendo o código que trata-se de algo privado, e por uma convenção entre os devs, ninguém mexe naquilo diretamente. É uma maneira de avisar que, mermão, se mexer pode quebrar a aplicação.
 
 ## Herança
 Use herança para herdar atributos de uma classe mãe para as classes filhas, onde as filhas podem ter atributos específicos, mas também atributos iguais a todos os seus irmãos que herdam de uma mesma mãe.
@@ -146,7 +146,7 @@ openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1)  �
 ```
 Use esse comando para gerar chave privada e pública e trabalhar com chaves assimétricas.
 
-## Definindo tipagem e usando o typing
+## Definindo tipagem com type hints e usando a lib typing
 No Python, você pode definir o tipo de dado que uma variável deve receber, por exemplo, vou criar uma variável nome_cliente e eu PRECISO que seja do tipo string, então:
 ```python
 nome_cliente : str = "Fernando"
@@ -156,9 +156,11 @@ Isso irá mostrar que a variável deve receber uma string. Um outro exemplo inte
 def somar(num1: int, num2: int):
     return num1 + num2
 ```
-Aqui vemos uma simples função de soma mas eu especifiquei que esse método só pode ser chamado com 2 números inteiros, então não dá para chamar com uma string. Isso aumenta muito a qualidade e segurança do código, além de deixar o código mais legível para outros devs.
+Aqui vemos uma simples função de soma mas eu especifiquei que esse método só pode ser chamado com 2 números inteiros, então não dá para chamar com uma string.
 
-Agora uma outra coisa bem legal em definição de tipagem, é a famosa setinha ->. Para que ela serve? Bom, essa setinha é utilizada geralmente depois da definição de um método, para dizer que tipo de dado esse método deve retornar, exemplo:
+O nome dessa prática é type hinting, onde você usa anotações de tipagem como : str para dar "dicas" de que tipo de dado será trabalhado em certa variável, classe ou função. Isso aumenta muito a qualidade e segurança do código, além de deixar o código mais legível para outros devs.
+
+Agora uma outra coisa bem legal em type hinting, é a famosa setinha ->. Para que ela serve? Bom, essa setinha é utilizada geralmente depois da definição de um método, para dizer que tipo de dado esse método deve retornar, exemplo:
 ```python
 def hello_world(nome: str) -> str:
     return f'Olá, mundo! Olá, {nome}!'
@@ -177,9 +179,9 @@ def cria_cliente(nome: str, idade: int) -> Cliente:
     cliente = Cliente(nome, idade)
     return cliente
 ```
-Olha só que legal, assim podemos podemos criar uma função que retorna um objeto, wow. Isso é muito utilizado em frameworks de desenvolvimento web, para instanciar a aplicação em sí, chamando as rotas que podem estar em outro arquivo do projeto!
+Olha só que legal, assim podemos podemos criar uma função que retorna um objeto, wow. Isso é muito utilizado em projetos profissionais que usam POO!
 
-Agora, quando quiser usar essa funcionalidade em casos mais complexos como com lista, por exemplo, você deve importar a biblioteca typing, que possui features que ajudam com esses tipos mais complexos de dados. Por exemplo, ao instanciar uma lista, posso usar a classe List da lib typing e definir para a lista receber somente determinado tipo de dado:
+Agora, quando quiser usar essa funcionalidade em casos mais complexos como com listas, por exemplo, você deve importar a biblioteca typing, uma biblioteca built-in do Python que contém vários auxiliares denominados notações que irão te ajudar a trabalhar com situações mais específicas. Por exemplo, ao instanciar uma lista, posso importar a notação List da lib typing e definir para a lista receber somente determinado tipo de dado:
 ```python
 from typing import List
 
@@ -197,6 +199,38 @@ lista_1: List[str] = ["Fernando", "João", "Pedro"]
 # Aqui, usarei para dizer que a lista só pode receber objetos da classe Cliente, sacou??
 lista_2: List[Cliente] = [cliente_1, cliente_2, cliente_3]
 ```
+Apesar de, se você vasculhar o código da lib typing, perceber que as notações são declaradas com def, é importante frizar que as notações do módulo typing NÃO são funções em sí, a semelhança entre notações do typing e funções comuns do python termina do termo def, mas de resto, até a sintaxe é diferente. Por exemplo, logo de cara você já percebe que elas começam com letras maiúsculas, e todos sabemos que funções comuns do Python são escritas em snake_case, sem letra maiúscula. Outra coisa é que os "parâmetros" dessas notações (que também podem ser chamadas de construções) são passados dentro de colchetes e não parênteses como esperamos.
+
+### Union e Optional: valores opicionais (ou não?)
+Falando um pouco mais da lib typing, outras notações interessantes são Union e Optional. O Union, serve para permitir que uma determinada variável receba dados de mais de um tipo diferente. Exemplo, considere que id, possa receber tanto um número int quanto uma string:
+```python
+from typing import Union
+
+def imprime_id(id: Union[int, str]):
+    print(id)
+```
+Assim, podemos permitir mais de um tipo de dado em uma variável. Outra maneira mais simples de fazer isso, disponível a partir do Python 3.10 é simplesmente fazer isso:
+```python
+def imprime_id(id: int | str):
+    print(id)
+```
+É bem mais simples e o bom é que nem precisa importar nada :D
+
+A outra notação desse tópico é a Optional, que é muuuito parecida com a Union mas com a diferença que um dos tipos é fixado no None, ou seja, você usa o Optional quando quer dizer que uma variável pode receber um int ou str por exemplo, ou valor nulo, segue a sintaxe do Optional:
+```python
+from typing import Optional
+
+def imprime_id(id: Optional[int]):
+    print(id)
+
+# nesse caso, Optional[int] seria a mesma coisa que Union[int, None] que é a mesma coisa que int | none, tendeu?
+```
+Porém, **ATENÇÃO!!!** Apesar do nome sugestivo, não se engane: a notação Optional NÃO quer dizer que o atributo é opcional. Muito menos a notação Union. O que define que o parâmetro de uma função ou atributo de um construtor é opcional, é o fato de ele ter valor padrão ou não, simplemente. Então no exemplo a seguir:
+```python
+def imprime_id(id: int = 0):
+    print(id)
+```
+Nesse caso, aí sim podemos dizer que o parâmetro id é opcional, pois ele pode receber qualquer valor int, mas se você quiser chamar a função sem nenhum parâmetro, a variável id vai receber o valor padrão de 0, tornando esse parâmetro de fato opcional! A notação Optional apenas diz que a variável pode ser nula, mas ela continua sendo **obrigatória**.
 
 ## with / as
 with é uma declaração em Python que é usada para trabalhar com recursos externos que precisam ser abertos antes do uso e, em seguida, fechados após o uso. O bloco with garante que o recurso será fechado ao final, mesmo que ocorra uma exceção.
@@ -219,4 +253,6 @@ variavel = None
 ```
 
 ## Modularização: a pasta infra
-Em um projeto profissional do Python, é comum usarmos uma pasta chamada infra para colocar códigos que envolvam bibliotecas que tenham papéis de protagonismo em seu sistema, por exemplo, é comum na pasta infra guardar códigos que envolvam o ORM que você vai usar, bibliotecas que conversam com serviços de nuvem como a AWS e coisas desse tipo.
+Em um projeto profissional do Python, é comum usarmos uma pasta chamada infra para colocar códigos que envolvam bibliotecas/frameworks que tenham papéis de protagonismo em seu sistema, por exemplo, é comum na pasta infra guardar códigos que envolvam o ORM que você vai usar, bibliotecas que conversam com serviços de nuvem como a AWS e coisas desse tipo.
+
+Agora, não é comum usar a pasta infra para o pytest, pois ele já vai ter a pasta tests na raíz do projeto, e não é comum também usar para frameworks de web dev, como Django, Flask e FastAPI, até porque eles já são os caras que estruturam o projeto em sí hehehe.
