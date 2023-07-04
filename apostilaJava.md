@@ -11,7 +11,7 @@ Ou seja, na repetição atual, existe uma condição, se for verdadeira, usa o q
 Cada classe faz apenas uma função, para poder reutilizar código, uma classe de Teste pode ser criada para aí sim fazer testes realmente.
 
 ## Classe public e private
-Uma classe ode ter várias sub-classes porém apenas uma classe por arquivo pode ser public.
+Uma classe pode ter várias sub-classes porém apenas uma classe por arquivo pode ser public.
 
 ## Sobrecarga e Sobrescrita
 São duas formas de implementar o polimorfismo, a sobrecarga é quando você faz um outro comportamento para um método mudando os atributos, a sobrescrita ou override, é quando os atributos se mantêm iguais.

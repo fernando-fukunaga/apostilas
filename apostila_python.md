@@ -1,14 +1,51 @@
+# Apostila de Python
+Nessa apostila, deixarei minhas anotações de estudo referente a linguagem Python, como a POO se aplica na lang, termos reservados ou exclusividades, coisas do tipo.
+
+## Programação Orientada a Objetos
+O Python pode não obrigar o dev a declarar classe no começo de qualquer código como a linguagem Java faz por exemplo, e por isso muitas pessoas não enxergam, mas o Python é praticamente todo feito em cima de OO. Tudo que você usa, até datatypes são objetos de classes. E com certeza a lang te dá todo o suporte para desenvolver com esse paradigma.
+
+## Os pilares da POO
+A maior convenção é que a POO tem quatro pilares:
+* Abstração
+* Encapsulamento
+* Herança
+* Polimorfismo
+
+Algumas pessoa consideram apenas 3, pois afirmam que a abstração já está dentro do encapsulamento. Mas isso realmente faz sentido, até porque, no fim das contas, todos esses pilares conversam entre sí. O encapsulamento envolve abstração, que pode envolver herança e a herança que permite que aconteca o polimorfismo e por aí vai. No final um pode depender do outro, e todos os pilares conversam entre sí de forma harmoniosa. Segue os 4 pilares da POO e sua aplicabilidade em Python.
+
+## Abstração
+Existem duas vertentes do conceito de abstação na POO, o primeiro é simplesmente o ato de trazer objetos do mundo real para a programação, aquele velho exemplo da classe animal, objeto cachorro e objeto gato e por aí vai.
+
+Agora um outro conceito que envolve a abstração consiste em criar uma classe abstrata, com métodos abstratos, mas o que isso significa? Uma classe abstrata não deve ser instanciada, assim como seus métodos não devem ser chamados diretamente. A classe abstrata serve literalmente apenas para ser usada como modelo para as suas subclasses, que aí sim, podem ter objetos. Os métodos abstratos devem ser obrigatóriamente escritos nas subclasses.
+
+Isso acontece quando subclasses diferentes de uma classe mãe, querem utilizar o mesmo método mas com algumas diferenças. Por exemplo, todos os animais fazem algum barulho, mas dependendo do animal esse barulho é diferente. Então considere uma classe abstrata Animal que tem o método abstrato make_sound. O método abstrado deve SEMPRE ser definido sem implementação alguma, apenas um pass. As subclasses de Animal devem obrigatóriamente ter todos os métodos abstratos, mas agora eles podem ter implementações diferentes de acordo com sua necessicade.
+
+As outras langs de POO geralmente possuem aquele termo chamado interface para aplicar esse conceito, como Java e PHP. Mas no Python não há o termo interface, então para criar uma interface usamos a lib ABC.
+
+A lib ABC é uma lib built-in. E dessa lib, você usará os módulos ABC e abstractmethod. Segue exemplo de uso:
+```python
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def make_sound(self):
+        pass
+
+class Dog(Animal):
+    def make_sound(self):
+        print("Woof!")
+```
+Não se esqueça de fazer a classe abstrata herdar de ABC. Para criar um método abstrato é só usar o decorator @abstractmethod e no processamento deixar só um pass, pois cada subclasse poderá usar esse método de um jeito um pouco diferente. o método abstrato DEVE estar nas subclasses mas como você viu, não precisa do decorator nelas também.
+
 ## Encapsulamento
-Encapsular os atributos;
+Encapsular a sua classe significa proteger a mesma, principalmente os seus atributos. A prática que mais simboliza o encapsulamento na POO é a questão de private e public, igual vemos no Java. Os atributos de uma classe devem sempre ser todos privados, para não serem acessados diretamente, e aí você cria os métodos públicos getter e setters para poder acessar.
 
-Criar atributos privados com dois underlines, ex: __saldo, para que os atributos só possam ser acessados ou alterados por meio do método correspondente, e não diretamente;
+Você não pode enfiar a mão no bolso de alguém e ver o seu documento, você deve perguntar o nome da pessoa, é isso que os getters e os setters fazem, e em Python, não temos os termos public e private. Tudo por padrão é público no Python, e para dizer que é privado você coloca dois underscores na frente, e.g., para definir que o atributo saldo será privado você muda seu nome para __saldo.
 
-Você não pode enfiar a mão no bolso de alguém e ver o seu documento, você deve perguntar o nome da pessoa;
-
-Simplificar o código criando funções para executar mias de uma função, para simplificar a chamada, encapsular a lógica, exemplo: função transfere é composta pela função saca de conta 1 seguida por deposita em conta 2.
+Você também deve sempre simplificar o código criando funções para executar mais de uma função, para simplificar a chamada, encapsular a lógica, exemplo: função transfere é composta pela função saca de conta 1 seguida por deposita em conta 2.
 
 ### Getters e setters
-Getter e setter são prefixos nas funções para especificar metodos de get ou set, exemplo: set_nome(), get_idade();
+Getter e setter são prefixos nas funções para especificar metodos de get ou set, exemplo: set_nome(), get_idade(). Esse é o jeito indicado para acessar atributos de uma classe, seguindo o encapsulamento.
 
 ### @property
 Usando o @property antes de um getter, você faz parecer que está acessando diretamente um atributo privado usando objeto.atributo sem parenteses, mas na verdade, por debaixo dos panos você está chamando um objeto.get_atributo();
@@ -66,24 +103,6 @@ O polimorfismo é uma vantagem que vem junto com a herança, trata-se de que nã
 
 Então você pode usar for programa in programas, se não fosse o polimorfismo você não poderia usar o for pois precisaria especificar a classe do programa como: Filme.vingadores ou Serie.breakingbad
 
-## Abstração
-A abstração consiste em criar uma classe abstrata, com métodos abstratos, mas o que isso significa? Uma classe abstrata não deve ser instanciada, assim como seus métodos não devem ser chamados diretamente. A classe abstrata serve literalmente apenas para ser usada como modelo para as suas subclasses, que aí sim, podem ter objetos. Os métodos abstratos devem ser obrigatóriamente escritos nas subclasses.
-
-Para criar uma classe abstrata, é necessário importar a lib abc, que é built-in. E dessa lib, você usará as classes ABC e abstractmethod. Segue exemplo de uso:
-```python
-from abc import ABC, abstractmethod
-
-class Animal(ABC):
-    @abstractmethod
-    def make_sound(self):
-        pass
-
-class Dog(Animal):
-    def make_sound(self):
-        print("Woof!")
-```
-Não se esqueça de fazer a classe abstrata herdar de ABC. Para criar um método abstrato é só usar o decorator @abstractmethod e no processamento deixar só um pass, pois cada subclasse poderá usar esse método de um jeito um pouco diferente. o método abstrato DEVE estar nas subclasses mas como você viu, não precisa do decorator nelas também.
-
 ## Agregação
 Em programação orientada a objetos, a agregação é um conceito que descreve a relação entre duas classes, onde uma classe é composta de objetos de outra classe como parte de sua estrutura. Em Python, a agregação pode ser implementada através da criação de instâncias de objetos de uma classe dentro de outra classe.
 
@@ -109,14 +128,16 @@ No exemplo acima, a classe "Livro" possui um atributo "autores", que é uma list
 
 A agregação é uma forma útil de modelar relacionamentos entre objetos em um programa orientado a objetos, permitindo que as classes sejam compostas de objetos de outras classes de maneira flexível e reutilizável.
 
-## Função Assíncrona
+## Função Assíncrona e await
 Uma função assíncrona, ou "async function", é uma função especial em Python que permite que o código seja executado de forma assíncrona. Isso significa que, em vez de bloquear a execução do programa até que uma operação seja concluída, a função assíncrona permite que o programa continue a ser executado enquanto a operação está em andamento.
 
 A função assíncrona é definida usando a palavra-chave "async" antes da definição da função. Ela é executada em um objeto asyncio.EventLoop, que é responsável por gerenciar a execução assíncrona.
 
-Dentro de uma função assíncrona, você pode usar a palavra-chave "await" antes de uma chamada a outra função assíncrona ou a uma operação de E/S (como uma chamada a uma API ou a um banco de dados), para indicar que você deseja esperar até que a operação seja concluída antes de continuar com a execução do código.
+Dentro de uma função assíncrona, você pode usar a palavra-chave "await" antes de uma chamada a outra função assíncrona ou a uma operação de E/S (como uma chamada a uma API ou a um banco de dados), para indicar que você deseja esperar até que a operação seja concluída antes de continuar com a execução da função. As vezes você precisa se algum valor ou dado para continuar com a função então você pede para ela "esperar" um pouco.
 
 As funções assíncronas são muito úteis para lidar com operações de E/S demoradas ou bloqueantes, como requisições de rede ou acesso a banco de dados, sem bloquear a execução do programa. Elas permitem que o código seja executado de forma mais eficiente, melhorando o desempenho e a escalabilidade do programa.
+
+Dentro de funções assíncronas, podemos usar tanto o await quando outros dois termos: async for e async with. Todas elas só podem ser usadas dentro de um async def (definição de função assíncrona). Todas essas atividades também podem ser chamadas de coroutines.
 
 ## Instanciando um objeto passando um dict como atributo
 Considere a seguinte classe herdeira de BaseModel:

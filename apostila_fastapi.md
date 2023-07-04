@@ -1,3 +1,6 @@
+## Super definição resumida do que é REST
+Em pouquíssimas palavras, dar um valor semântico às requisições, de acordo com o path e o método HTTP.
+
 ## Path Parameters e Query Parameters
 Quando precisar escolher entre path parameters ou query parameters na chamada de um endpoint, pense sempre que os path parameters são destinados a organização e modularização, por exemplo para acessar partes específicas da sua estrutura, quando o dado que quer filtrar é um dado estático, sem atributos a serem qualificados, como um id por exemplo, ou sub páginas num site.
 
@@ -13,8 +16,10 @@ def funcao(token: Annotated[str, Depends(dependency)]):
 ```
 Até o momento, eu sei que isso não passa de uma boa prática e não usar pode causar erros, mas ainda precisamos pesquisar melhor o motivo de usar essa feature.
 
-## CORS
+## CORS (Cross-Origin Resource Sharing)
 Se você quiser integrar um front na sua aplicação, ele pode estar rodando fora do seu servidor back, por exemplo, os dois podem estar no localhost mas em portas diferentes, e quando isso acontece, o FastAPI irá barrar qualquer requisição que venha de, digamos, "fontes desconhecidas". Para isso, devemos configurar o CORS no FastAPI para especificar de quais origens nossa aplicação backend pode receber requisições.
+
+O CORS é um conceito do javascript, quando um front em JS precisa se comunicar com seu serviço REST, é importante que o seu backend tenha configurado o CORS, ele define quais origens podem acessar o seu serviço, quais headers serão permitidos, quais métodos HTTP serão permitidos e coisas do tipo.
 
 ## BaseModel e pydantic
 Os modelos para um projeto FastAPI podem ser divididos em dois tipos. Temos os modelos do negócio, que seriam os modelos que refletem as entidades do nosso modelo conceitual do banco de dados mesmo, nossas tabelas, são as entidades que compões o negócio por trás da nossa aplicação.
