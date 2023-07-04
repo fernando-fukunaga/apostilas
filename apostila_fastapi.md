@@ -103,7 +103,15 @@ alembic upgrade head
 
 Pronto, você usou o alembic para atualizar seu banco sem precisar excluir ele a criar de novo. Lembre-se de sempre instalar o alembic e inicializar ele antes mesmo de rodar o projeto pela primeira vez, pois assim, você terá um histórico completo do ciclo de vida do seu banco de dados desde a sua criação.
 
-E lembre-se também que ter muita certeza das constraints de suas colunas na primeira criação, pois achei burocrático alterar isso depois, vejo o alembic como uma ferramenta mais para adicionar tabelas e colunas, alterar constraints já é um pouco complicado.
+E lembre-se também que ter muita certeza das constraints de suas colunas na primeira criação, pois achei burocrático alterar isso depois, vejo o alembic como uma ferramenta mais para adicionar tabelas e colunas que permitem null, alterar constraints já é um pouco complicado.
+
+Uma coisa que vi que dá para fazer é se caso queira fazer alterações em chaves estrangeiras, é só colocar além da coluna chave desejada dentro do ForeignKey(), inserir também um name, isso permitirá "forçar" a adição de uma nova coluna de chave estrangeira, permitindo ela ter valor nulo nos registros já existentes, mas acho que isso não soa correto, pelo menos tente atualizar os registros existentes para que eles deixem de ter valor nulo nessa chave. O problema é se você já tem 500 registros lol, claro que você poderia automatizar um processo aí mas seria complicado pois você está alterando todo o negócio na aplicação que pode já estar em "produção". Essa é a importância de estruturar muito bem o banco de dados e os requisitos funcionais do projeto antes de iniciar o desenvolvimento.
+
+De qualquer forma, a definição de name para ForeignKey ficará algo como:
+```python
+produto_id - Column(Integer, ForeignKey('produto.id', name='fk_pedido_produto'))
+```
+Fazendo isso, você pode pedir para o alembic alterar o seu banco adicionando chaves estrangeiras que ficarão com valor nulo nos registros já existentes.
 
 ## Dicas e boas práticas
 * É uma boa prática colocar os nomes das rotas com palavras no plural, exemplo: "/buscar-contratos", isso faz parte da definição de REST, uma API RESTful tem que seguir esses tipos de padrão.
