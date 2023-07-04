@@ -277,3 +277,40 @@ variavel = None
 Em um projeto profissional do Python, é comum usarmos uma pasta chamada infra para colocar códigos que envolvam bibliotecas/frameworks que tenham papéis de protagonismo em seu sistema, por exemplo, é comum na pasta infra guardar códigos que envolvam o ORM que você vai usar, bibliotecas que conversam com serviços de nuvem como a AWS e coisas desse tipo.
 
 Agora, não é comum usar a pasta infra para o pytest, pois ele já vai ter a pasta tests na raíz do projeto, e não é comum também usar para frameworks de web dev, como Django, Flask e FastAPI, até porque eles já são os caras que estruturam o projeto em sí hehehe.
+
+## O comando yield
+O comando yield é bem parecido com o return, ambos devem ser usados dentro de uma função. A grande diferença é que, quando uma função chega em um return, ela retorna esse valor e a função ACABA, ela se encerra e se for chamada novamente começará do início. Agora o yield, retorna uma valor porém ele **pausa** a execução da função e depois da chamada, continua a execução da onde parou, sendo possível assim, retornar mais de um valor na mesma função. Mas para que serveria isso?
+
+Uma função que usa yield é chamada de "generator function", ela é uma função que gera valores, e quando você chama ela com uma variável, essa variável será do tipo 'generator', e você pode imprimir ela como lista, por exemplo. Você pode gerar iteráveis, basicamente. Funções geradores combinam muito com laços de repetição, inclusive.
+
+Confira esse script onde a função filtra_impares() usa do yield para imprimir todos os números ímpares qua existem antes de um número x:
+```python
+def filtra_impares(numeros: int):
+    for numero in range(numeros):
+        if numero%2 != 0:
+            yield numero
+
+numeros_impares = filtra_impares(20)
+
+print(type(numeros_impares))
+print(list(numeros_impares))
+```
+Como pode ver, a cada repetição do laço for, a função vai verificar se o resto da divisão do número por 2 é diferente de zero, se for verdadeiro, o número é ímpar e então ele itera o mesmo na variável numeros_impares que foi quem a chamou. Mas depois disso, ao invés de começar o laço for novamente, ele vai continuar o mesmo de onde parou, até passar por todos os 20 números. Então eu peço para ele imprimir o tipo da variável numeros_impares e depois para imprimi-la como lista, o output será o seguinte:
+```terminal
+<class 'generator'>
+[1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+```
+Se nesse caso eu usasse o return ao invés do yield, assim que o operador lógico encontrasse desse verdadeiro, a função iria se encerrar, e então a variável numeros_impares ia acabar recebendo apenas o número 1.
+
+Mas o yield, não serve apenas para gerar iteráveis gigantes e listas. Ele pode ser usado em um caso de try/finally, onde após o retorno do dado, o programa ainda precisa voltar na função pra fazer mais uma coisnha. O melhor exemplo disso é o caso do SQLAlchemy, onde, para cada vez que eu preciso fazer uma consulta ou escrita no banco de dados, tenho que pegar uma session e fechar a mesma depois da operação. A melhor forma de fazer isso é usando yield e o try/finally:
+```python
+def obter_sessao():
+    session = SessionLocal()
+
+    try:
+        yield session
+
+    finally:
+        session.close()
+```
+Ele vai retornar a sessão para ser utilizada na operação com o banco, mas após essa operação acontecer, deve voltar para realizar o session.close(). Então usamos o yield nesse caso não para criar uma lista ou algo do tipo. Mas para "salvar" o progresso de execução de uma função e poder voltar nela depois de onde paramos.
