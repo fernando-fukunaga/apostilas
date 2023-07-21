@@ -113,5 +113,17 @@ produto_id - Column(Integer, ForeignKey('produto.id', name='fk_pedido_produto'))
 ```
 Fazendo isso, você pode pedir para o alembic alterar o seu banco adicionando chaves estrangeiras que ficarão com valor nulo nos registros já existentes.
 
+## Background Tasks
+Às vezes em nossa aplicação, vamos precisar realizar uma tarefa que pode se tornar demorada e afetar no desempenho da nossa aplicação. E quando isso acontece, podemos usar background tasks para já dar um retorno ao cliente e deixar essas tarefas para serem realizadas a parte, haja visto que são coisas que, se derem erro, podem ser comunicadas depois.
+
+Isso geralmente é usado para tarefas como enviar um e-mail ou processar um pagamento, por exemplo. Repare que quando fazemos uma compra em um e-commerce, ao mandar os dados do nosso cartão de crédito e finalizar a compra já recebemos a confirmação da compra imediatamente. Por que isso acontece? Pois o site opta por já te dar uma confirmação enquanto executa por meio de uma background task a sua função de processar pagamento, já que esta pode demorar um pouco para ser finalizada.
+
+A grande motivação por trás disso, na minha visão, está relacionada a UX, pois se para processos demorados como esse a gente obrigasse o cliente a aguardar todo o processamento antes de dar um retorno, daria a impressão que o site é lento, isso não é bom. Ficaria naquele loading eterno do navegador, usuário nenhum gosta disso.
+
+## Middlewares
+Middlewares são processos que você pode colocar no meio do fluxo entre a requisição feita pelo cliente e a rota no servidor. Você pode pedir para que sempre antes do processamento de uma rota X, seja executada uma função qualquer. Então você libera a rota para ser executada, e quando ela tiver a response, você pode, ainda, fazer mais alguma outra coisa (tipo uma chamada de função mesmo) antes de liberar a response para viajar até o cliente.
+
+É como se fosse um pedágio das requests e responses antes de chegar no servidor ou depois de sair dele, você pode usar o middleware para o que for necessário dentro da sua regra de negócio.
+
 ## Dicas e boas práticas
 * É uma boa prática colocar os nomes das rotas com palavras no plural, exemplo: "/buscar-contratos", isso faz parte da definição de REST, uma API RESTful tem que seguir esses tipos de padrão.
