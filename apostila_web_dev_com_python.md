@@ -1,5 +1,10 @@
+# Apostila de Desenvolvimento Web com Python
+Essa apostila irá concentrar anotações mais focadas na parte backend e web. Conceitos, libs, boas práticas, padrões, etc. Usando a linguagem Python
+
 ## Super definição resumida do que é REST
 Em pouquíssimas palavras, dar um valor semântico às requisições, de acordo com o path e o método HTTP.
+
+## A diferença entre WSGI e ASGI
 
 ## Path Parameters e Query Parameters
 Quando precisar escolher entre path parameters ou query parameters na chamada de um endpoint, pense sempre que os path parameters são destinados a organização e modularização, por exemplo para acessar partes específicas da sua estrutura, quando o dado que quer filtrar é um dado estático, sem atributos a serem qualificados, como um id por exemplo, ou sub páginas num site.
