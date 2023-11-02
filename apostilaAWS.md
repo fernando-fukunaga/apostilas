@@ -36,4 +36,5 @@ Depois de tudo isso é só definir que o target do load balancer será o seu aut
 ## Resumo do Fluxo
 Segue um desenho que demonstra o resumo do funcionamento desse fluxo todo:
 <img src="images/aws/fluxo-ec2.jpg" width=800>
+
 Basicamente, o cliente chama um DNS, que aponta pro load balancer, que terá um alvo, que é o auto scaling group, que possui geralmente algumas máquinas e irá criando e destruindo mais máquinas conforme intensidade de tráfego. Para este exemplo, usei um DNS externo e pedi para ele apontar para o nosso load balancer, mas tem como fazer tudo isso dentro da AWS com o serviço Route 53 que cuida de DNS também.
