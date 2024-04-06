@@ -128,6 +128,54 @@ No exemplo acima, a classe "Livro" possui um atributo "autores", que é uma list
 
 A agregação é uma forma útil de modelar relacionamentos entre objetos em um programa orientado a objetos, permitindo que as classes sejam compostas de objetos de outras classes de maneira flexível e reutilizável.
 
+## Atributos de classe vs atributos de instância
+Uma classe pode ter dois tipos de atributos: atributos de classe ou instância. Os atributos de classe são atibutos definidos dentro do corpo da classe mas fora de qualquer método como o construtor da classe, portanto eles serão constantes e terão o mesmo valor para qualquer instância da classe, e não estarão atrelados diretamente a estas instâncias. Já os atributos de instâncias são os atributos normais que são definidos geralmente em um método construtor e terão valores diferentes para cada instância.
+
+Imagine uma classe Baralho, que representa um baralho tradicional de cartas. Uma carta tem como atributos seu valor e seu naipe, mas, para ficar mais fácil de fazer comparações de qual carta é mais forte, esses atributos serão representados por números int, ao invés de str. Porém quero que exista uma forma de representar os objetos em forma de str legível para o usuário final, então criarei dois atributos de classe que são dict e associarei uma string para cada "código" de naipe e valor, se liga em como fica o código:
+```python
+class Baralho:
+    def __init__(self, naipe, valor):
+        self.naipe = naipe
+        self.valor = valor
+
+    naipe_names = {
+        1: "Ouros",
+        2: "Espadas",
+        3: "Copas",
+        4: "Paus"
+    }
+
+    valor_names = {
+        1: "Ás",
+        2: "2",
+        3: "3",
+        4: "4",
+        5: "5",
+        6: "6",
+        7: "7",
+        8: "8",
+        9: "9",
+        10: "10",
+        11: "Valet",
+        12: "Dama",
+        13: "Rei",
+    }
+
+    def __str__(self):
+        return f"{Baralho.valor_names.get(self.valor)} de {Baralho.naipe_names.get(self.naipe)}"
+
+
+carta = Baralho(naipe=4, valor=13)
+print(carta)
+# a saída do console será:
+# Rei de Paus
+```
+Repare que, no método "dunder str", utilizamos sintáxes diferentes para acessar valores, para acessar o atributo de **classe** valor_names, utilizamos a sintáxe NomeDaClasse.valor_names, e para acessar o atributo de instância valor, por exemplo, usamos a sintáxe objeto.valor. Portando, o atributo valor_names está atrelado a classe e o atributo valor está atrelado à instância de Baralho, ou seja, para chamar os dois seria algo como:
+```python
+Baralho.valor_names # retorna os nomes dos valores
+carta.valor # retorna o valor em int da carta
+```
+
 ## Função Assíncrona e await
 Uma função assíncrona, ou "async function", é uma função especial em Python que permite que o código seja executado de forma assíncrona. Isso significa que, em vez de bloquear a execução do programa até que uma operação seja concluída, a função assíncrona permite que o programa continue a ser executado enquanto a operação está em andamento.
 
@@ -163,7 +211,7 @@ Ao fazer isso, você pode digitar apenas **dict ao invés de escrever como parâ
 
 ## Criptografia Assimétrica
 ```terminal
-openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1)         -keyout private.key -out public.crt         -days 1095 -subj "/CN=teste_fanna"
+openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1)         -keyout private.key -out public.crt         -days 1095 -subj "/CN=teste"
 ```
 Use esse comando para gerar chave privada e pública e trabalhar com chaves assimétricas.
 
