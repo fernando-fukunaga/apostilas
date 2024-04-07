@@ -7,6 +7,25 @@ energia = energia + 1 > 10 ? 10 : energia + 1
 ```
 Ou seja, na repetição atual, existe uma condição, se for verdadeira, usa o que estiver depois do ? e se for false, o programa usa o que estiver depois do :. Então ele verifica se a energia + 1 ponto é maior que 10, se for maior, energia recebe 10, se ainda não for mais, é adicionado mais um ponto ao valor de energia. E então o laço é quebrado quando energia == 10.
 
+## Operador de pré-incremento vs pós-incremento
+Existem dois tipos de operadores de incremento: o operador de pré-incremento (++variavel) e o operador de pós-incremento (variavel++).
+
+O operador de pré-incremento (++variavel) aumenta o valor da variável em 1 antes de usar a variável em uma expressão. Aqui está um exemplo:
+```java
+int num = 5;
+int resultado = ++num; //num é incrementado para 6 e depois atribuído a resultado
+System.out.println(num); // imprime 6
+System.out.println(resultado); // imprime 6
+```
+Já o operador de pós-incremento (variavel++) aumenta o valor da variável em 1 depois de usar a variável em uma expressão. Aqui está um exemplo:
+```java
+int num = 5;
+int resultado = num++; //num é atribuído primeiramente à variável resultado e depois incrementado para 6
+System.out.println(num); // imprime 6
+System.out.println(resultado); // imprime 5
+
+```
+
 ## Alta coesão
 Cada classe faz apenas uma função, para poder reutilizar código, uma classe de Teste pode ser criada para aí sim fazer testes realmente.
 
@@ -27,3 +46,12 @@ Antes, uma interface do Java só podia ter métodos abstratos, ou seja, métodos
 
 ## Classe Abstrata vs Interface
 Uma classe abstrata pode ser atributos declarados e estado, uma interface não, apenas métodos, comportamentos concretos, não pode ter estado.
+
+## Modificadores de acesso
+Private - Só a própria classe pode ver e manipular.
+
+Public - Qualquer classe pode ver ou manipular.
+
+Default (sem definir se é public ou private) - Qualquer classe do mesmo **pacote** pode ver ou manipular, se quiser acessar um atributo default de uma classe de outro pacote, por exemplo, tem que ir lá que colocar um public se não, não irá conseguir puxar a informação.
+
+Protected - Em breve.
