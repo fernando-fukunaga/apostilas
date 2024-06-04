@@ -54,4 +54,11 @@ Public - Qualquer classe pode ver ou manipular.
 
 Default (sem definir se é public ou private) - Qualquer classe do mesmo **pacote** pode ver ou manipular, se quiser acessar um atributo default de uma classe de outro pacote, por exemplo, tem que ir lá que colocar um public se não, não irá conseguir puxar a informação.
 
-Protected - Em breve.
+Protected - Qualquer classe do mesmo pacote e qualquer subclasse independente do pacote pode ver e manipular.
+
+## Atalhos do IntelliJ Idea
+* Ctrl + Alt + O - Importar todas as classes/pacotes que não foram importados e remover imports não utilizados na classe atual.
+
+* Ctrl + / - Comentar um bloco de código selecionado.
+
+* Shift + F6 - Renomear de forma inteligente classes, métodos e atributos de forma a renomear em todos os lugares onde são usados, inclusive nome de arquivos.
