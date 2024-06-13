@@ -62,3 +62,6 @@ Protected - Qualquer classe do mesmo pacote e qualquer subclasse independente do
 * Ctrl + / - Comentar um bloco de código selecionado.
 
 * Shift + F6 - Renomear de forma inteligente classes, métodos e atributos de forma a renomear em todos os lugares onde são usados, inclusive nome de arquivos.
+
+## Interfaces como Adjetivos
+Você pode utilizar interfaces para definir que diferentes classes de diferentes "árvores genealógicas de herança" SEJAM alguma coisa. Por exemplo uma classe Produto com uma subclasse Margarina e uma outra classe Servico com uma subclasse ConsertoDePia. Tanto a margarina que é um produto quanto o conserto de uma pia que é um serviço são coisas tributáveis, ou seja, é cobrado imposto sobre isso. Você pode criar uma interface Tributavel com o método calculoDeImposto definido, então qualquer classe seja ela filha de Servico ou Produto pode implementar essa interface Tributavel e aí cada uma vai ter uma maneira diferente de fazer o cálculo dos impostos com o método calculoDeImposto. Ou seja, se o produto for tributável, então ele implementa a interface Tributavel, isso é um exemplo de polimorfismo.
