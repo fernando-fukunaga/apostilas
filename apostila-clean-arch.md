@@ -41,3 +41,6 @@ Porém, por outro lado, há pessoas que argumentam que o framework web é algo m
 Nesse caso, os componentes Spring como controllers, poderiam ser implementados na camada de adapters, e alguns outros componentes como os services, já poderiam ser implementados até mesmo na camada de aplicação, fazendo com que a implementação direta dos use cases já seja com o Spring. Tem gente até que já usa coisas do Spring diretamente no core da app. Enquanto na camada de infra ficariam realmente apenas as outras dependências externas: ORM, libs de segurança, SDKs de provedores cloud, drivers de bancos de dados, etc. Pois entende-se que essas coisas podem mudar com mais frequência e ditam menos o funcionamento de uma aplicação backend.
 
 Portanto, ao desenvolver uma aplicação com clean arch, escolha aquilo que faz mais sentido para você e para o contexto da sua aplicação: framework web incluído ou não, é uma escolha sua.
+
+## Material útil
+<a href="https://metal-flea-041.notion.site/LIVE-Arquitetura-Limpa-com-Java-232f8dd937d244069f160c9360c00761">https://metal-flea-041.notion.site/LIVE-Arquitetura-Limpa-com-Java-232f8dd937d244069f160c9360c00761<a>
