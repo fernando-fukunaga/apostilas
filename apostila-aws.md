@@ -39,3 +39,54 @@ Segue um desenho que demonstra o resumo do funcionamento desse fluxo todo:
 <img src="images/aws/fluxo-ec2.jpg" width=800>
 
 Basicamente, o cliente chama um DNS, que aponta pro load balancer, que terá um alvo, que é o auto scaling group, que possui geralmente algumas máquinas e irá criando e destruindo mais máquinas conforme intensidade de tráfego. Para este exemplo, usei um DNS externo e pedi para ele apontar para o nosso load balancer, mas tem como fazer tudo isso dentro da AWS com o serviço Route 53 que cuida de DNS também.
+
+# Amazon IAM e Segurança
+## Introdução
+Você tem 4 coisas a considerar quando falamos de IAM: usuário, grupo, policy e role. Policies são documentos JSON que preconizam os acessos e permissões a serviços e recursos da AWS. As policies podem ser aplicadas em usuários, grupos ou roles. Você pode aplicar a policy diretamente a um usuário, ou aplicar em grupos e dividir os usuários em diferentes grupos para os usuários herdarem as permissões dos grupos. Uma role é mais utilizada para ser aplicada dioretamente a serviços, por exemplo, criar uma role que tem uma policy de acesso read only ao S3, e aplicar essa role a uma instância de EC2, para que a aplicação possa ler do S3, sem precisar dar esse acesso diretamente a nenhum usuário ou grupo.
+
+Quando uma atualização é feita em alguma policy, ela é automaticamente aplicada para todos os users e groups que usam essa policy.
+
+## Amazon CloudTrail
+Um serviço que monitora todas as interações de todos os usuários com a sua AWS, útil para monitoramento, investigações e etc. Por padrão, ele salva logs de todas as interações em todos os serviços nos últimos 90 dias, mas esse período pode ser estendido.
+
+## Estrutura do documento de policy
+The basic structure of the statements in an IAM Policy is:
+
+* **Effect**: says whether to Allow or Deny the permissions.
+
+* **Action**: specifies the API calls that can be made against an AWS Service (eg cloudwatch:ListMetrics).
+
+* **Resource**: defines the scope of entities covered by the policy rule (eg a specific Amazon S3 bucket or Amazon EC2 instance, or * which means any resource).
+
+Example:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ec2:Describe*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "elasticloadbalancing:Describe*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:ListMetrics",
+                "cloudwatch:GetMetricStatistics",
+                "cloudwatch:Describe*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "autoscaling:Describe*",
+            "Resource": "*"
+        }
+    ]
+}
+```
