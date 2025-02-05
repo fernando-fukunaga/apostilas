@@ -82,3 +82,71 @@ public class User {
     private String password;
 }
 ```
+
+## Persistência de dados com JPA
+JPA é uma especificação de ORM para o Java, ele não é uma implementação de ORM nem uma lib nem nada do tipo. Apenas define um conjunto de regras e práticas para persistência no estilo ORM mesmo. Para utilizar JPA você precisa de uma **implementação**, existe a implementação presente na API do Jakarta EE (antigo Java EE) ou você pode usar o Hibernate, um framework de ORM para Java, e provavelmente a implementação mais famosa. Outras implementações conhecidas são EclipseLink e OpenJPA.
+
+No JPA temos algo chamado EntityManager, é a principal interface da JPA para gerenciar entidades e interagir com o banco de dados. Ele é responsável por persistir, buscar, atualizar, remover dados no banco. O EntityManager gerencia o ciclo de vida das entidades e mantém um cache de primeiro nível (as entidades recuperadas dentro da mesma transação são reutilizadas sem precisar de uma nova consulta ao banco).
+
+Para usar o EntityManager em uma classe de DAO, por exemplo, vc deve criar um EntityManagerFactory, necessário para criar o EntityManager, iniciar uma transação, chamar um método de EntityManager como persist() para inserir um objeto no banco, e completar a transação utilizando commit() depois fechando o EntityManager. Confira um exemplo:
+```java
+import jakarta.persistence.*;
+
+public class ClienteDAO {
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("meuPU");
+
+    public void salvarCliente(Cliente cliente) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();  // Inicia uma transação
+
+        em.persist(cliente);  // Insere o cliente no banco
+
+        em.getTransaction().commit(); // Confirma a transação
+        em.close(); // Fecha o EntityManager
+    }
+}
+```
+
+### Hibernate
+* **O que é?** O Hibernate é a implementação mais popular da JPA. Ele é um framework ORM (Object-Relational Mapping) que gerencia a persistência de objetos Java no banco de dados.
+* Diferencial: Ele fornece recursos extras além da JPA, como cache de segundo nível, suporte a queries HQL, otimizações de performance, etc.
+* Trabalha com SQL e HQL: Ele pode converter consultas SQL nativas ou permitir o uso de HQL (Hibernate Query Language), que é mais orientada a objetos.
+
+Exemplo de código Hibernate puro (sem usar Spring):
+```java
+SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+Session session = sessionFactory.openSession();
+Transaction tx = session.beginTransaction();
+
+Cliente cliente = new Cliente();
+cliente.setNome("João");
+session.save(cliente);
+
+tx.commit();
+session.close();
+```
+
+Perceba que, ao contrário do JPA, o Hibernate exige mais configurações e gerenciamento manual da sessão.
+
+### Spring Data JPA
+Spring Data JPA é um módulo do Spring Boot que simplifica o uso da JPA e do Hibernate. Ele elimina a necessidade de escrever consultas SQL ou HQL na maioria dos casos e permite criar repositórios com apenas interfaces.
+
+Vantagens:
+* Menos código boilerplate (não precisa gerenciar EntityManager manualmente)
+* Criação automática de queries com findBy + nome do atributo.
+* Facilidade para paginação e ordenação.
+
+Exemplo de repositório com Spring Data JPA:
+```java
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
+    List<Cliente> findByNome(String nome);
+}
+```
+Aqui, JpaRepository já fornece métodos prontos como save(), findAll(), findById(), e até consultas personalizadas com findByNome(String nome) sem precisar escrever SQL.
+
+* Mas eu só consigo usar Spring Data JPA com o Hibernate?
+Não! Por padrão, quando você instala o Spring Data JPA no seu projeto, ele vem com o Hibernate, mas você pode utilizar outra implementação do JPA conforme sua preferência, basta configurar isso no application.properties ou application.yml corretamente!
