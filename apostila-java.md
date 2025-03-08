@@ -108,7 +108,7 @@ public class ClienteDAO {
 ```
 
 ### Hibernate
-* **O que é?** O Hibernate é a implementação mais popular da JPA. Ele é um framework ORM (Object-Relational Mapping) que gerencia a persistência de objetos Java no banco de dados.
+* **O que é?:** O Hibernate é a implementação mais popular da JPA. Ele é um framework ORM (Object-Relational Mapping) que gerencia a persistência de objetos Java no banco de dados.
 * Diferencial: Ele fornece recursos extras além da JPA, como cache de segundo nível, suporte a queries HQL, otimizações de performance, etc.
 * Trabalha com SQL e HQL: Ele pode converter consultas SQL nativas ou permitir o uso de HQL (Hibernate Query Language), que é mais orientada a objetos.
 
@@ -150,3 +150,45 @@ Aqui, JpaRepository já fornece métodos prontos como save(), findAll(), findByI
 
 * Mas eu só consigo usar Spring Data JPA com o Hibernate?
 Não! Por padrão, quando você instala o Spring Data JPA no seu projeto, ele vem com o Hibernate, mas você pode utilizar outra implementação do JPA conforme sua preferência, basta configurar isso no application.properties ou application.yml corretamente!
+
+## Records
+Os records foram introduzidos no Java na versão 14 como uma prévia e oficializados no Java 16. Eles são um novo tipo de classe, ideal para a representação e definição de dados imutáveis, o seu maior uso no backend, por exemplo, é para definir os contratos dos DTOs de request e response. Ao escrever um Record, você apenas precisa definir os atributos, que por padrão são variáveis tipo final, os códigos boilerplate de classes comuns como constructors, getters e equals() são gerados automaticamente.
+
+### Exemplo de Record vs. Classe Tradicional
+**Usando um Record**
+```java
+public record Pessoa(String nome, int idade) {}
+```
+Isso automaticamente gera:
+* Um construtor Pessoa(String nome, int idade)
+* Métodos equals(), hashCode() e toString()
+* Getters (nome() e idade())
+
+**Usando uma Classe Tradicional**
+```java
+public class Pessoa {
+    private final String nome;
+    private final int idade;
+
+    public Pessoa(String nome, int idade) {
+        this.nome = nome;
+        this.idade = idade;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    @Override
+    public boolean equals(Object obj) { /* Implementação manual */ }
+    @Override
+    public int hashCode() { /* Implementação manual */ }
+    @Override
+    public String toString() { return "Pessoa{" + "nome='" + nome + "', idade=" + idade + "}"; }
+}
+```
+A versão que usa record é muito mais concisa e evita código repetitivo.
