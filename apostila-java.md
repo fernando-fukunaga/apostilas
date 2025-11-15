@@ -192,3 +192,87 @@ public class Pessoa {
 }
 ```
 A versão que usa record é muito mais concisa e evita código repetitivo.
+
+## Annotations do Spring Boot
+### @Autowired
+A anotação @Autowired em cima de um atributo, serve para deixar o Spring saber que deverá fazer uma injeção de dependência para nós. Uma injeção automática.
+
+Pense por exemplo em uma classe Controller, ela depende de um Service, correto? Para quando o usuário fazer uma requisição para a API o Service ser chamado para aplicar regras de negócio, chamar um Repository, etc. Podemos, para isso, chamar o Service no Constructor da classe Controller, eliminando a necessidade de instanciar um objeto de Service para utilizá-lo:
+```java
+@Restcontroller
+@RequestMapping("/products")
+public class ProductController {
+
+    private ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping
+    public ProductDTO getProducts() {
+        return productService.getProducts();
+    }
+}
+```
+Repare que eu não precisei instanciar um novo objeto de ProductService usando o "new", a instância é passada no construtor da classe e quem passa é o próprio Spring, facilitando a nossa vida e injetando a dependência na nossa classe. O Spring trabalha muito com injeção de dependência.
+
+Mas existe uma maneira ainda mais simples de indicar ao Spring que ele precisa injetar uma dependência na minha classe. Pra isso a gente só declara o atributo que queremos usar de outra classe e decora com @Autowired, dessa forma não precisamos escrever um construtor, o Spring Boot já vai entender o que queremos e você vai poder usar o productService depois para chamar métodos de Service:
+```java
+@Restcontroller
+@RequestMapping("/products")
+public class ProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping
+    public ProductDTO getProducts() {
+        return productService.getProducts();
+    }
+}
+```
+
+## Os Beans do Spring Boot
+Em uma aplicação Spring Boot, todos os principais componentes são mapeados usando annotations, services, controllers, etc. E essas annotations em cima das declarações de classe, ajudam o Spring a mapear todos os componentes que a sua aplicação possui, para assim, realizar as injeções de dependências:
+```java
+@Service
+public class ProductService {
+    // code
+}
+```
+A annotation @Service deixa todos saberem que se trata de um Service, e isso facilita na hora de chamar essa classe em outras classes.
+
+Agora, e quando você quer fazer Autowired com uma classe que NÃO faz parte do ecossistema Spring Boot? Como por exemplo um SDK da AWS ou o Hibernate? É nessa hora que os Beans entram em ação. Um Bean é uma classe criada pelo DEV que se tornará uma annotation que pode ser usada em outras classes para facilitar o Spring a entender que aquilo faz parte da aplicação.
+
+Geralmente, criamos um pacote chamado "config" ou "configuration" e nela, criamos nossos Beans:
+```java
+package com.fernando.aplicacao.configuration;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AwsSdkConfiguration {
+    @Bean
+    public AWSSDK awsSDK() {
+        return new AWSSDK();
+    }
+}
+```
+Aqui, nós criamos uma classe de configuração do Spring e, logo em seguida criamos um método que retorna uma instância de um hipotético SDK da AWS com a anotação @Bean.
+
+dessa forma. quando o Spring analisar o código, ele sabe que precisará guardar em memória e passar a gerenciar uma instância da classe AWSSDK, e agora podemos chamá-la em outras classes usando o @Autowired, como se ela fosse um Service ou algo assim:
+```java
+@Service
+public class productService {
+
+    @Autowired
+    private AWSSDK awsSDK;
+
+    public Product buscaProdutoDynamo(int id) {
+        return productDTO.dynamoToEntity(DynamoRegistry awsSDK.DynamoDB.findById(id));
+    }
+}
+```
+
+Pronto, aogra teremos uma instância de AWSSDK totalmente gerenciada pelo Spring e que será injetada em todo lugar que pedirmos usando @Autowired, e lembrando, será sempre a mesma instância!
