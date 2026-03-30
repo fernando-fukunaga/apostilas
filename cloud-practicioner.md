@@ -43,10 +43,12 @@ Você (cliente) normalmente é responsável por atualizar o sistema operacional 
 * **AWS Snowball Edge** - é um dispositivo de hardware usado para transporte de dados em grande escala. Você pode usar o Snowball Edge para transferir com segurança grandes quantidades de dados para a nuvem AWS em alta velocidade. Suporta terabytes de transferência de dados.
 * **Amazon S3 Transfer Acceleration** - pode acelerar as transferências de e para o Amazon S3 para transferências de longa distância ou arquivos grandes, adequado para trabalhos recorrentes de transferência de dados, e não para uma migração única.
 
-## Serviços Observadores
-* **Truted Advisor** - Fornece CONSELHOS para seguir as melhores práticas de gerenciamento de nuvem AWS
+## Serviços Observadores e de Monitoramento
+* **Trusted Advisor** - Fornece CONSELHOS para seguir as melhores práticas de gerenciamento de nuvem AWS
 * **CloudWatch** - é usado para monitorar recursos e aplicações. No entanto, o CloudWatch, por si só, não fornece um registro das atividades realizadas em uma conta.
-* **CloudTrail** - fornece auditoria operacional e de risco, governança e conformidade de sua conta da AWS. Você pode usar o CloudTrail para identificar ações do usuário em serviços AWS como excluir uma instância EC2, por exemplo.
+* **CloudTrail** - Registra e audita todas as ações realizadas na conta AWS, capturando chamadas de API feitas por usuários, serviços ou aplicações. Ele mostra quem fez, quando fez e de onde fez, sendo essencial para auditoria e segurança. Diferente do AWS Config, não mantém o estado dos recursos, mas sim o histórico das atividades que causaram mudanças.
+* **AWS Config** - Monitora e registra continuamente o estado e as configurações dos recursos dentro da AWS, mantendo um histórico detalhado de mudanças ao longo do tempo. Ele permite visualizar como um recurso estava antes, como está agora e avaliar se está em conformidade com regras definidas (compliance). Diferente do CloudTrail, não foca em quem executou a ação, mas sim no resultado da mudança na infraestrutura.
+* **Para a prova** - Pense o seguinte: Cloudtrail é quem mudou, quando mudou e de onde mudou. Config é o que mudou, como estava antes e como ficou agora.
 * **Amazon Inspector** - é um serviço de gerenciamento de vulnerabilidades que escaneia continuamente suas cargas de trabalho da AWS em busca de vulnerabilidades de software e exposição não intencional à rede.
 
 ## Diferenças entre Site-to-Site VPN, Direct Connect e Client VPN
@@ -54,22 +56,22 @@ Você (cliente) normalmente é responsável por atualizar o sistema operacional 
 * **AWS Site-to-Site VPN** - cria um caminho de rede criptografado entre sua rede on-premises e sua rede na nuvem AWS. Essa conexão usa a Internet. O Site-to-Site VPN fornece uma conexão a nível de rede com a AWS a partir de data centers on-premises, não de laptops.
 * **AWS Client VPN** - é um serviço gerenciado de VPN baseado no cliente que permite acessar de forma segura seus recursos da AWS e os recursos na sua rede on-premises. Com o Client VPN, você pode acessar seus recursos de qualquer local usando um cliente de VPN com base no OpenVPN.
 
-## Diferença entre AWS Direct Connect e AWS VPN
-A AWS fornece o **AWS VPN** como um serviço gerenciado. O AWS VPN estabelece uma conexão criptografada segura entre a AWS e suas redes on-premises ou de filiais.
-
-Você pode usar o **Direct Connect** para conectar de forma privada sua rede on-premises à nuvem AWS. No entanto, a comunicação via Direct Connect não é criptografada.
+### 🎯 Resumo simples (bem direto)
+* **Direct Connect** → conexão dedicada, privada e física (cabos físicos), sem uso de internet, visando alto desempenho
+* **Site-to-Site VPN** → conecta empresas à AWS via internet
+* **Client VPN** → conecta usuários individuais à AWS
 
 ## Tipos de Gateway
-* **Internet Gateway**: Você pode usar um gateway de internet para estabelecer conexões públicas de internet em um Amazon VPC.
-* **NAT Gateway**: É possível usar gateway NAT para estabelecer uma conexão para instâncias em uma sub-rede privada dentro de um VPC. Os gateways NAT permitem que as instâncias se conectem a recursos ou serviços fora do VPC.
-* **Virtual Private Gateway**: É possível usar um gateway privado virtual para estabelecer conexões com a nuvem AWS para sites on-premises por meio de túneis Site-to-Site VPN.
-* **Gateway do AWS Direct Connect**: Um gateway do Direct Connect pode estabelecer uma conexão de sites on-premises à nuvem AWS. Um gateway Direct Connect usa links dedicados que são isolados da Internet.
-* **Amazon Transit Gateway**: O Amazon VPC Transit Gateways é um hub de trânsito de rede usado para interconectar VPCs e redes on-premises.
+* **Internet Gateway**: Permite que recursos dentro de um Amazon VPC se comuniquem com a internet pública. É anexado ao VPC e usado principalmente por instâncias em sub-redes públicas. Diferente dos demais, ele não faz tradução de endereço nem cria túneis privados — apenas habilita acesso direto à internet.
+* **NAT Gateway**: Permite que instâncias em sub-redes privadas acessem a internet sem receber conexões de entrada. Ele faz tradução de endereços (NAT), funcionando como intermediário. Ao contrário do Internet Gateway, ele não expõe os recursos diretamente à internet.
+* **Virtual Private Gateway (VGW)**: ÉUsado para conectar o VPC a ambientes on-premises através de VPN Site-to-Site (IPsec). Ele representa o lado da AWS na VPN. Diferente dos gateways de internet, cria conexões privadas e criptografadas entre redes.
+* **Gateway do AWS Direct Connect**: Permite conectar ambientes on-premises à AWS por meio de uma conexão dedicada física, sem passar pela internet. Diferente do VGW, não depende de VPN (embora possa ser combinado com ela) e oferece maior estabilidade e menor latência.
+* **Amazon Transit Gateway**: Funciona como um hub central para interligar múltiplos VPCs e redes on-premises. Em vez de várias conexões ponto a ponto (como VGW ou Direct Connect isolados), ele simplifica a arquitetura centralizando o roteamento.
 
 ## Finanças
 **AWS Budgets**: O AWS Budgets é um serviço que permite criar orçamentos personalizados para monitorar e controlar custos e uso da AWS. Você pode definir limites, alertas, gerar relatórios para comparar gastos reais vs previstos, etc. O alerta pode apitar quando você estiver próximo de estourar seu orçamento.
 
-**AWS Cost Explorer**: O AWS Cost Explorer é uma ferramenta de visualização e análise de custos e uso da AWS ao longo do tempo. É mais para puxar o histório, com direito a uma infinidade de filtros, para análises pós, com muita granularidade, com horários das atividades realizadas etc.
+**AWS Cost Explorer**: O AWS Cost Explorer é uma ferramenta de visualização e análise de custos e uso da AWS ao longo do tempo. É mais para puxar o histórico, com direito a uma infinidade de filtros, para análises pós, com muita granularidade, com horários das atividades realizadas etc.
 
 O **AWS Pricing Calculator** oferece a capacidade de criar estimativas para seus casos de uso da AWS antes de criar as aplicações. O AWS Pricing Calculator pode fornecer uma estimativa de custo.
 
@@ -117,7 +119,7 @@ O **AWS Pricing Calculator** oferece a capacidade de criar estimativas para seus
 
 **AWS Shield** - Proteção contra DDos
 
-É possível criar IAM roles e atribuir a instâncias EC2 para dar acesso à um bucket por exemplo
+É possível criar IAM roles e atribui-las à instâncias EC2 para dar acesso à um bucket por exemplo
 
 As **chaves de acesso do IAM** são credenciais de curto ou longo prazo. As chaves de acesso permitem que você acesse a AWS de forma programada.
 
@@ -133,6 +135,8 @@ Dentro do Well Architected Framework, Disaster Recovery está mais para confiabi
 
 **Amazon Lightsail** - pode fornecer aos usuários da AWS uma solução simples de servidor virtual privado (VPS). O Lightsail pode fornecer aos desenvolvedores capacidades e recursos de computação, armazenamento e rede para implantar e gerenciar sites e aplicações web na nuvem.
 
+O **AWS Elastic Beanstalk** é um serviço da AWS que facilita a implantação, gestão e escalabilidade de aplicações web na nuvem; ele permite que desenvolvedores façam o upload do código e o próprio serviço cuida automaticamente da infraestrutura necessária, incluindo provisionamento de servidores, balanceamento de carga, auto scaling e monitoramento, permitindo que você foque no desenvolvimento sem se preocupar com detalhes operacionais.
+
 **AWS Global Accelerator** - usa a rede global da AWS para rotear o tráfego para o endpoint regional ideal com base na integridade, na localização do cliente e em outras políticas personalizadas. O Global Accelerator ajuda a aumentar a disponibilidade e o desempenho das aplicações hospedadas na AWS.
 
 **KMS - Key managment service**, usado para criar chaves criptográficas que controlam o uso em diversos serviços da AWS.
@@ -143,14 +147,10 @@ O **AWS Systems Manager** é usado para organizar, monitorar e automatizar taref
 
 **Certificate Manager** implanta certificados SSL/TLS para criptografar dados enquanto trafegam na rede.
 
-Os **locais da borda** fazem parte da rede de entrega de conteúdo (CDN) da AWS. Eles são otimizados para entrega de conteúdo, não diretamente vinculados às Zonas de Disponibilidade. São pontos aleatorios em varios lugares do mundo que guardam em cache contedudo acessado com frequencia, diminuindo a latencia no cliente
+Os **locais da borda** fazem parte da rede de entrega de conteúdo (CDN) da AWS. Eles são otimizados para entrega de conteúdo, não diretamente vinculados às Zonas de Disponibilidade. São pontos aleatórios em varios lugares do mundo que guardam em cache conteúdo acessado com frequencia, diminuindo a latencia no cliente
 
 A **AWS GovCloud (EUA)** é uma solução de nuvem criada para hospedar dados confidenciais e controlados, incluindo ativos críticos e de alto valor, atendendo requisitos de segurança. Ela oferece duas regiões isoladas (Leste e Oeste dos EUA), operadas e acessíveis apenas por cidadãos dos EUA, garantindo arquitetura segura, escalável e resiliente, com conectividade via Internet pública ou AWS Direct Connect.
 
-O **AWS Elastic Beanstalk** é um serviço da AWS que facilita a implantação, gestão e escalabilidade de aplicações web na nuvem; ele permite que desenvolvedores façam o upload do código e o próprio serviço cuida automaticamente da infraestrutura necessária, incluindo provisionamento de servidores, balanceamento de carga, auto scaling e monitoramento, permitindo que você foque no desenvolvimento sem se preocupar com detalhes operacionais.
-
 O **AWS Control Tower** é um serviço da AWS que facilita a criação, configuração e governança de ambientes multi-conta na nuvem. Ele ajuda empresas a estabelecer e administrar uma “aterrissagem” (landing zone) segura e bem estruturada, com boas práticas de segurança, conformidade, padronização e automação desde o início, permitindo o gerenciamento centralizado e simplificado de várias contas AWS de acordo com políticas e diretrizes corporativas.
-
-O **AWS Config** é um serviço da AWS que permite monitorar, auditar e avaliar as configurações dos recursos na nuvem. Ele registra continuamente alterações e o histórico das configurações dos recursos da AWS, ajudando a identificar desvios, analisar conformidade com políticas, e atender requisitos de auditoria e segurança. Assim, facilita a gestão e o controle dos recursos, mantendo um rastreamento detalhado de como e quando cada configuração foi modificada.
 
 **AWS Ground Station**: é usado para controlar as comunicações via satélite, processar dados de satélite e dimensionar as operações de satélite.
