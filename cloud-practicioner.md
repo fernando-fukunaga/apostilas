@@ -37,7 +37,7 @@ Você (cliente) normalmente é responsável por atualizar o sistema operacional 
 
 ## Sobre o Amazon VPC
 * **Conexões de peering**: Permitem rotear o tráfego entre duas VPCs usando endereços IPv4 ou IPv6, não é possível usá-las para bloquear tráfegos específicos.
-* **ACL de rede**: Atua como um firewall, você pode definir regras de entrada e saída para controlar quem pode ou não acessar, pode bloquear trafegos específicos.
+* **ACL de rede**: Atua como um firewall, você pode definir regras de entrada e saída para controlar quem pode ou não acessar, pode bloquear trafegos específicos. Ele atua a nível de subnet dentro de um VPC.
 
 ## Tranferência de dados e arquivos
 * **AWS Snowball Edge** - é um dispositivo de hardware usado para transporte de dados em grande escala. Você pode usar o Snowball Edge para transferir com segurança grandes quantidades de dados para a nuvem AWS em alta velocidade. Suporta terabytes de transferência de dados.
