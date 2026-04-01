@@ -1,8 +1,10 @@
 ## Tipos de Instância EC2:
 * **Instância sob demanda** - padrão EC2, instância normal que vc paga conforme usa.
 * **Instância Reservada** - Vc reserva uma instância sob demanda porém respeitando alguns critérios pre estabelecidos, com um "contrato" de no mínimo 1 ano, para ter um desconto no pagamento.
-* **Instância spot** - Você pode usar infraestrutura que sobrou na nuvem, e não está sendo utilizada, assim vai pagar um valor mais em conta. Porém, é recomendada apenas para aplicações que não tem problema ficar fora do ar por alguns períodos. Não é recomendado em aplicações críticas.
+* **Instância spot** - Você pode usar infraestrutura que sobrou na nuvem, e não está sendo utilizada, assim vai pagar um valor mais em conta. Porém, é recomendada apenas para aplicações que não tem problema ficar fora do ar por alguns períodos. Não é recomendado em aplicações críticas. Desconto pode chegar a 90%, é a mais barata de todas.
 * **Host dedicado** - Quase como um VPS, ao invés de ser uma instância virtual, é um servidor físico, dedicado apenas para você, com isolamento das outras instancias de outros clientes.
+
+Quando um cliente executa uma instância sob demanda do Amazon Linux EC2 por 3 horas, 5 minutos e 6 segundos. Ele vai ser cobrado por exatamente 3h5min6s, não tem arredondamentos.
 
 ## Hipervisor no EC2
 Um hipervisor é a camada de software (ou firmware) que cria e gerencia máquinas virtuais (VMs) sobre um servidor físico. Ele faz a “ponte” entre o hardware (CPU, memória, disco, rede) e os sistemas operacionais das VMs, permitindo que várias VMs rodem no mesmo host físico de forma isolada.
@@ -71,9 +73,10 @@ Você (cliente) normalmente é responsável por atualizar o sistema operacional 
 ## Finanças
 **AWS Budgets**: O AWS Budgets é um serviço que permite criar orçamentos personalizados para monitorar e controlar custos e uso da AWS. Você pode definir limites, alertas, gerar relatórios para comparar gastos reais vs previstos, etc. O alerta pode apitar quando você estiver próximo de estourar seu orçamento.
 
-**AWS Cost Explorer**: O AWS Cost Explorer é uma ferramenta de visualização e análise de custos e uso da AWS ao longo do tempo. É mais para puxar o histórico, com direito a uma infinidade de filtros, para análises pós, com muita granularidade, com horários das atividades realizadas etc.
+O **AWS Cost Explorer** é a ferramenta visual e interativa para acompanhar, filtrar e prever gastos de forma rápida no console, sendo ideal para análise gerencial do dia a dia e decisões rápidas.
+Já o **AWS Cost and Usage Report (CUR)** entrega arquivos brutos e altamente detalhados de custo e consumo na AWS, sendo ideal para auditoria e análises avançadas em ferramentas como Athena/BI ou gerar tabelas semanalmente no Amazon QuickSight para monitoramento; em resumo, use Cost Explorer para visibilidade rápida e CUR para profundidade técnica.
 
-O **AWS Pricing Calculator** oferece a capacidade de criar estimativas para seus casos de uso da AWS antes de criar as aplicações. O AWS Pricing Calculator pode fornecer uma estimativa de custo.
+**AWS Pricing Calculator**: oferece a capacidade de criar estimativas para seus casos de uso da AWS antes de criar as aplicações. O AWS Pricing Calculator pode fornecer uma estimativa de custo.
 
 ## Serviços de IA
 **Amazon Rekognition**: é um serviço da AWS que oferece análise de imagens e vídeos baseada em inteligência artificial. Ele permite identificar objetos, pessoas, textos, cenas e atividades, além de reconhecer rostos, detectar emoções e realizar moderação de conteúdo visual automaticamente, facilitando a integração de recursos avançados de visão computacional em aplicações sem necessidade de expertise em machine learning.
@@ -154,3 +157,25 @@ A **AWS GovCloud (EUA)** é uma solução de nuvem criada para hospedar dados co
 O **AWS Control Tower** é um serviço da AWS que facilita a criação, configuração e governança de ambientes multi-conta na nuvem. Ele ajuda empresas a estabelecer e administrar uma “aterrissagem” (landing zone) segura e bem estruturada, com boas práticas de segurança, conformidade, padronização e automação desde o início, permitindo o gerenciamento centralizado e simplificado de várias contas AWS de acordo com políticas e diretrizes corporativas.
 
 **AWS Ground Station**: é usado para controlar as comunicações via satélite, processar dados de satélite e dimensionar as operações de satélite.
+
+O **AWS GuardDuty** é um serviço gerenciado de detecção de ameaças que analisa logs da AWS (como CloudTrail, VPC Flow Logs e DNS) para identificar atividades suspeitas com inteligência de ameaças e ML, gerando alertas (findings) — ou seja, ele **detecta e avisa**, mas não bloqueia automaticamente por padrão.
+
+O **AWS Route 53** oferce alta disponibilidade e baixa latência inclusive fazendo failover entre regiões diferentes. Já o **Application Load Balancer** também oferece alte disponibilidade e baixa latência, porém apenas dentro de uma mesma região.
+
+O **AWS Step Functions** é um serviço orquestração de aplicativos serverless que coordena serviços como Lambda, ECS, SNS, SQS e DynamoDB usando máquinas de estado, com fluxo sequencial/paralelo, decisões, retries e tratamento de erros, além de visualização das execuções; em prática, ele automatiza processos complexos com mais confiabilidade e menos código de controle, sendo comum em prova para diferenciar orques.
+
+A **AWS Partner Network (APN)** é o programa de parceiros da AWS que conecta empresas com consultores terceirizados e parceiros de serviços aprovados pela AWS. Esses parceiros são qualificados para fornecer serviços especializados em soluções e produtos da AWS.
+
+O **AWS Fargate** é a opção serverless para rodar contêineres no ECS e EKS sem gerenciar servidores EC2: você configura CPU, memória, rede e permissões, e a AWS cuida da infraestrutura; na prática, ele simplifica a operação e cobra por recurso usado, sendo muito cobrado na CLF-C02 como escolha para executar contêineres sem administrar hosts.
+
+O **Amazon FSx for Windows File Server** é um serviço totalmente gerenciado que fornece servidores de arquivos Windows totalmente compatíveis com o protocolo Server Message Block (SMB).
+
+**AWS Storage Gateway** é um serviço que integra o armazenamento em nuvem da Amazon com ambientes de data center locais. Ele fornece acesso em cache de dados na nuvem, permitindo que você utilize o armazenamento na nuvem, mantendo uma cópia dos dados mais frequentemente acessados localmente para baixa latência.
+
+O **S3 Glacier Flexible Retrieval** é ideal para dados que não são acessados com frequência e que podem ser recuperados dentro de um tempo de até 12 horas, oferecendo um custo de armazenamento por gigabyte muito baixo em comparação com outras classes de armazenamento.
+
+O **AWS CloudShell** é um serviço pré-autenticado baseado em navegador que permite executar comandos da AWS CLI diretamente no Console de Gerenciamento da AWS. Isso significa que você não precisa configurar nenhuma credencial de acesso para usar o CloudShell, o que o torna ideal para usuários que precisam acessar os serviços da AWS rapidamente e sem precisar instalar nenhuma ferramenta adicional.
+
+**AWS Application Composer**: Ferramenta de desenvolvimento low-code da AWS.
+
+O **AWS Cognito** é um serviço da AWS que permite fácil integração de recursos de autenticação de usuários em aplicativos móveis e web. Ele fornece recursos de gerenciamento de identidade de usuário, além de federação com provedores de identidade social populares, como Facebook, Google, Amazon e Apple.
