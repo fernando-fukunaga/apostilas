@@ -24,6 +24,21 @@ Você (cliente) normalmente é responsável por atualizar o sistema operacional 
 * **Amazon EFS** - Sistema de arquivos compartilhados serverless
 * **Amazon EBS** - Serviço de armazenamento em blocos para montar arquivos do OS e da aplicação de uma instância EC2
 
+### Resumo simples:
+#### EBS = “HD de uma máquina EC2”
+* Fica ligado a uma instância por vez (na prática).
+* Ótimo para banco de dados, sistema operacional, aplicações com disco local.
+* Baixa latência, alto desempenho por volume.
+
+#### EFS = “pasta de rede compartilhada”
+* Várias instâncias EC2 podem acessar ao mesmo tempo.
+* Ideal para arquivos compartilhados (uploads, conteúdo web, home dirs).
+* Escala automaticamente o tamanho, sem você gerenciar volume.
+
+#### Regra rápida:
+* Se você quer disco “da instância” → EBS.
+* Se você quer armazenamento compartilhado entre servidores → EFS.
+
 ## Banco de Dados
 **Amazon RDS (Relational Database Service)**: é um serviço gerenciado de banco de dados relacional. Ele suporta motores como MySQL, PostgreSQL, MariaDB, Oracle e SQL Server, facilitando a configuração, a operação e o escalonamento de bancos de dados tradicionais na nuvem. É usado para aplicações que precisam de um banco relacional com alta disponibilidade e manutenção simplificada.
 
@@ -39,15 +54,15 @@ Você (cliente) normalmente é responsável por atualizar o sistema operacional 
 
 ## Sobre o Amazon VPC
 * **Conexões de peering**: Permitem rotear o tráfego entre duas VPCs usando endereços IPv4 ou IPv6, não é possível usá-las para bloquear tráfegos específicos.
-* **ACL de rede**: Atua como um firewall, você pode definir regras de entrada e saída para controlar quem pode ou não acessar, pode bloquear trafegos específicos. Ele atua a nível de subnet dentro de um VPC.
+* **ACL de rede**: Atua como um firewall, você pode definir regras de entrada e saída para controlar quem pode ou não acessar, pode bloquear trafegos específicos. Ele atua a nível de subnet dentro de um VPC. E são stateless, não guardam informações sobre conexões anteriores, o que significa que elas avaliam cada pacote de forma independente
 
 ## Tranferência de dados e arquivos
-* **AWS Snowball Edge** - é um dispositivo de hardware usado para transporte de dados em grande escala. Você pode usar o Snowball Edge para transferir com segurança grandes quantidades de dados para a nuvem AWS em alta velocidade. Suporta terabytes de transferência de dados.
+* **AWS Snowball Edge** - é um dispositivo de hardware usado para transporte de dados em grande escala. Você pode usar o Snowball Edge para transferir com segurança grandes quantidades de dados para a nuvem AWS em alta velocidade. Suporta terabytes de transferência de dados. Quando é enfatizado que a transferência será de data center físico para AWS, pode ser o **Snowmobile**.
 * **Amazon S3 Transfer Acceleration** - pode acelerar as transferências de e para o Amazon S3 para transferências de longa distância ou arquivos grandes, adequado para trabalhos recorrentes de transferência de dados, e não para uma migração única.
 
 ## Serviços Observadores e de Monitoramento
 * **Trusted Advisor** - Fornece CONSELHOS para seguir as melhores práticas de gerenciamento de nuvem AWS
-* **CloudWatch** - é usado para monitorar recursos e aplicações. No entanto, o CloudWatch, por si só, não fornece um registro das atividades realizadas em uma conta.
+* **CloudWatch** - é usado para monitorar recursos e aplicações. No entanto, o CloudWatch, por si só, não fornece um registro das atividades realizadas em uma conta. Ele pode sugerir redimensionamentos para o EC2 com base no que ele observa.
 * **CloudTrail** - Registra e audita todas as ações realizadas na conta AWS, capturando chamadas de API feitas por usuários, serviços ou aplicações. Ele mostra quem fez, quando fez e de onde fez, sendo essencial para auditoria e segurança. Diferente do AWS Config, não mantém o estado dos recursos, mas sim o histórico das atividades que causaram mudanças.
 * **AWS Config** - Monitora e registra continuamente o estado e as configurações dos recursos dentro da AWS, mantendo um histórico detalhado de mudanças ao longo do tempo. Ele permite visualizar como um recurso estava antes, como está agora e avaliar se está em conformidade com regras definidas (compliance). Diferente do CloudTrail, não foca em quem executou a ação, mas sim no resultado da mudança na infraestrutura.
 * **Para a prova** - Pense o seguinte: Cloudtrail é quem mudou, quando mudou e de onde mudou. Config é o que mudou, como estava antes e como ficou agora.
@@ -82,6 +97,10 @@ Já o **AWS Cost and Usage Report (CUR)** entrega arquivos brutos e altamente de
 **Amazon Rekognition**: é um serviço da AWS que oferece análise de imagens e vídeos baseada em inteligência artificial. Ele permite identificar objetos, pessoas, textos, cenas e atividades, além de reconhecer rostos, detectar emoções e realizar moderação de conteúdo visual automaticamente, facilitando a integração de recursos avançados de visão computacional em aplicações sem necessidade de expertise em machine learning.
 
 **Amazon Macie**: é um serviço da AWS voltado para segurança e proteção de dados, que utiliza machine learning para identificar, classificar e proteger dados confidenciais armazenados na AWS, especialmente em buckets do Amazon S3. Ele detecta automaticamente dados sensíveis, como informações pessoais, e monitora possíveis exposições ou acessos não autorizados, ajudando empresas a manter conformidade com regulamentações de privacidade e segurança.
+
+**Amazon Lex**: Lex é um serviço para construir interfaces de conversação usando tecnologia de reconhecimento de voz e processamento de linguagem natural.
+
+**Amazon Kendra**: extrair textos de documentos.
 
 ## AWS Support Plans
 **1. Basic (Gratuito)**
@@ -174,8 +193,17 @@ O **Amazon FSx for Windows File Server** é um serviço totalmente gerenciado qu
 
 O **S3 Glacier Flexible Retrieval** é ideal para dados que não são acessados com frequência e que podem ser recuperados dentro de um tempo de até 12 horas, oferecendo um custo de armazenamento por gigabyte muito baixo em comparação com outras classes de armazenamento.
 
+Você pode usar o **S3 Lifecycle** para definir regras para automatizar a movimentação de objetos para armazenamento de classes de armazenamento mais econômicas, como o Amazon S3 Glacier, após um determinado período de tempo sem acesso. Isso ajuda a reduzir os custos, mantendo os dados acessíveis quando necessário. Isso tbm pode ser associado ao **Intelligent-Tiering**.
+
 O **AWS CloudShell** é um serviço pré-autenticado baseado em navegador que permite executar comandos da AWS CLI diretamente no Console de Gerenciamento da AWS. Isso significa que você não precisa configurar nenhuma credencial de acesso para usar o CloudShell, o que o torna ideal para usuários que precisam acessar os serviços da AWS rapidamente e sem precisar instalar nenhuma ferramenta adicional.
 
 **AWS Application Composer**: Ferramenta de desenvolvimento low-code da AWS.
 
 O **AWS Cognito** é um serviço da AWS que permite fácil integração de recursos de autenticação de usuários em aplicativos móveis e web. Ele fornece recursos de gerenciamento de identidade de usuário, além de federação com provedores de identidade social populares, como Facebook, Google, Amazon e Apple.
+
+**GuardDuty** - Detectar atividades suspeitas no trafego de red
+**Inspector** - Detectar Vulnerabilidades
+
+**WAF** - Defender de um SQLinjection
+
+**Pilares WAF** - Eficiencia de desempenho e excelência operacional. Elasticidade **NÃO** faz parte!
